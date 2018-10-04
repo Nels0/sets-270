@@ -6,6 +6,8 @@
 *.lo
 #*.o
 *.obj
+/Deliverable\ 1/*.o
+/Deliverable\ 2/*.o
 
 # Precompiled Headers
 *.gch
