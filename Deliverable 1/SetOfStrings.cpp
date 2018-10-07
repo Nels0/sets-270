@@ -115,13 +115,42 @@ string SetOfStrings::returnElement(int index)
 
 SetOfStrings *SetOfStrings::product(SetOfStrings *s)
 {
-	//You are required to implement this
+
     SetOfStrings *out = new SetOfStrings();
+
+    std::vector<string>::iterator p1;
+
+
+    p = setv.begin();
+    while(p!=setv.end()){
+
+        p1 = s->setv.begin();
+        while(p1!=s->setv.end()){
+            out->insertElement("(" + *p + "," + *p1 + ")");
+
+            ++p1;
+        }
+
+        ++p;
+    }
+    //if(DEBUG){out->print();}
     return out;
 }
 
 bool SetOfStrings::subset(SetOfStrings *s)
 {
-    //You are required to implement this
+
+    //cout << s->size() << size() << endl;
+    //if(DEBUG){s->print();print();}
+
+    
+    std::vector<string>::iterator p1;
+
+    for(p1=s->setv.begin(); p1!=s->setv.end(); p1++){
+        //if(DEBUG){cout << "checking if " << *p1 << " is member." << endl;}
+        if(!isMember(*p1)){
+            return false;
+        }
+    }
     return true;
 }
