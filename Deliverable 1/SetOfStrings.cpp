@@ -1,3 +1,9 @@
+#ifdef _DEBUG
+#define DEBUG true
+#else
+#define DEBUG false
+#endif
+
 #include "SetOfStrings.h"
 
 using namespace std;
@@ -44,26 +50,49 @@ string SetOfStrings::ColourText(string s, COLOUR c)
 }
 void SetOfStrings::print()
 {
-   //You have implemented this in the lab
+   p=setv.begin();
+   while(p!=setv.end()){
+        cout << *p << endl;
+        ++p;
+   }
 }
 
 void SetOfStrings::removeElement(string s)
 {
-    //You have implemented this in the lab
+    p=setv.begin();
+    while(p!=setv.end()){
+        if(*p == s){
+            setv.erase(p);
+            if(DEBUG){cout<< "Element \"" <<s<< "\" removed" <<endl;}
+            return;
+        }
+    }
+    if(DEBUG){cout<<"Element not removed/found"<<endl;}
 
 }
 
 SetOfStrings *SetOfStrings::setUnion(SetOfStrings *s)
 {
-    //You have implemented this in the lab
+    SetOfStrings *s1 = new SetOfStrings();
 
-    SetOfStrings *out = new SetOfStrings();
-    return out;
+    for(p=setv.begin(); p!=setv.end(); p++){
+        s1->insertElement(*p);
+    }
+    for(p=s->setv.begin(); p!= s->setv.end(); p++){
+        s1->insertElement(*p);
+    }
+
+    return s1;
 }
 
 bool SetOfStrings::isEqual(SetOfStrings *s)
 {
-    //You have implemented this in the lab
+    for(p=setv.begin(); p!=setv.end(); p++){
+        if(!s->isMember(*p)){
+            return false;
+        }
+    }
+
     return true;
 }
 
