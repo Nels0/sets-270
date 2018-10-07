@@ -10,11 +10,11 @@
 #   define ASSERT(condition, message) \
 do { \
 if (! (condition)) { \
-std::cerr << "\033[1;31m" << message << "('" #condition "') failed in " << __FILE__ \
+std::cerr << "\033[1;31m" << message << ": Failed\n\t(" #condition ") in " << __FILE__ \
 << " line " << __LINE__ << ".\033[0m" << std::endl; \
 } \
 else { \
-std::cout << "\033[1;32m" << message << "('" #condition "') passed.\033[0m" << std::endl; \
+std::cout << "\033[1;32m" << message << ": Passed.\n\t(" #condition ")\033[0m" << std::endl; \
 } \
 } while (false)
 #else
@@ -91,7 +91,7 @@ void runAllTests()
 {
     //testMember();
     testInsert();
-    //testSubset();
+    testSubset();
     testProduct();
     testIsReflexive();
     //testRemove();
