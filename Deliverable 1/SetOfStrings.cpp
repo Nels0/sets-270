@@ -63,11 +63,12 @@ void SetOfStrings::removeElement(string s)
     while(p!=setv.end()){
         if(*p == s){
             setv.erase(p);
-            if(DEBUG){cout<< "Element \"" <<s<< "\" removed" <<endl;}
+            //if(DEBUG){cout<< "Element \"" <<s<< "\" removed" <<endl;}
             return;
         }
+        p++;
     }
-    if(DEBUG){cout<<"Element not removed/found"<<endl;}
+    //if(DEBUG){cout<<"Element not removed/found"<<endl;}
 
 }
 

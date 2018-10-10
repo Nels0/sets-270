@@ -203,8 +203,17 @@ bool StringRelation::isReflexive(){
 //check if the relation is symmetric
 //if for any s1,s2 \in set1, (s1,s2) \in R implies (s2,s1) \in R
 bool StringRelation::isSymmetric(){
-	//You are required to implement this 
-			return true;
+
+    std::vector<string>::iterator p;
+
+    for(p=setv.begin(); p!=setv.end(); p++){
+        //cout << "checking if " << computeDual(*p) << " isMember: " << isMember(computeDual(*p)) << endl;
+        if(!isMember(computeDual(*p))){
+            return false;
+        }
+    }
+
+    return true;
 }
 
 //check if the relation is transitive
@@ -225,8 +234,11 @@ bool StringRelation::isEquivalence(){
 //s1 is of the form "a" while s2 is of the form "p,q"
 //if a==p then return true
 bool StringRelation::isFirstComponent(string s1, string s2){
-	//You are required to implement this
-    return true;
+    std::vector<string> s2Tokens = makeTokens(s2);
+    if(s1 == s2Tokens[0]){
+        return true;
+    }
+    return false;
 }
 
 
