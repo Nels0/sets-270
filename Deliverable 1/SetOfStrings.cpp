@@ -20,7 +20,7 @@ int SetOfStrings::size(){
 
 bool SetOfStrings::isMember(string s)
 {
-    p=setv.begin();
+    vector<string>::iterator p =setv.begin();
     while(p!=setv.end()){
         if(*p==s)return true;
         ++p;
@@ -50,7 +50,7 @@ string SetOfStrings::ColourText(string s, COLOUR c)
 }
 void SetOfStrings::print()
 {
-   p=setv.begin();
+    vector<string>::iterator p=setv.begin();
    while(p!=setv.end()){
         cout << *p << endl;
         ++p;
@@ -58,8 +58,8 @@ void SetOfStrings::print()
 }
 
 void SetOfStrings::removeElement(string s)
-{
-    p=setv.begin();
+{   
+    vector<string>::iterator p=setv.begin();
     while(p!=setv.end()){
         if(*p == s){
             setv.erase(p);
@@ -74,6 +74,8 @@ void SetOfStrings::removeElement(string s)
 SetOfStrings *SetOfStrings::setUnion(SetOfStrings *s)
 {
     SetOfStrings *s1 = new SetOfStrings();
+    vector<string>::iterator p;
+
 
     for(p=setv.begin(); p!=setv.end(); p++){
         s1->insertElement(*p);
@@ -87,6 +89,7 @@ SetOfStrings *SetOfStrings::setUnion(SetOfStrings *s)
 
 bool SetOfStrings::isEqual(SetOfStrings *s)
 {
+    vector<string>::iterator p;
     for(p=setv.begin(); p!=setv.end(); p++){
         if(!s->isMember(*p)){
             return false;
@@ -99,6 +102,7 @@ bool SetOfStrings::isEqual(SetOfStrings *s)
 string SetOfStrings::returnElement(int index)
 {
 	int i=0;
+    vector<string>::iterator p;
 	if(index > size()) return "\n";
     p=setv.begin();
     while(p!=setv.end()){
@@ -121,7 +125,7 @@ SetOfStrings *SetOfStrings::product(SetOfStrings *s)
     std::vector<string>::iterator p1;
 
 
-    p = setv.begin();
+    vector<string>::iterator p = setv.begin();
     while(p!=setv.end()){
 
         p1 = s->setv.begin();

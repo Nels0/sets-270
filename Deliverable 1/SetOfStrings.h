@@ -12,7 +12,7 @@ enum COLOUR {RED=0, BLUE, GREEN, WHITE, YELLOW};
 class SetOfStrings{
 protected:
     vector<string> setv;
-    vector<string>::iterator p;
+    //vector<string>::iterator p;
 public:
 
 	// Set calculation (Students need to complete this section)
