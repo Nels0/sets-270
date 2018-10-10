@@ -1,3 +1,8 @@
+#ifdef _DEBUG
+#define DEBUG true
+#else
+#define DEBUG false
+#endif
 #include "StringRelation.h"
 
 //will be used for calling the ColourText() method in print() functions
@@ -164,14 +169,34 @@ string StringRelation::returnSecondComponent(string s){
 //return false otherwise
 bool StringRelation::isReflexiveElement(string s){
 
-	//You are required to implement this
+	std::vector<string> elements = makeTokens(s);
+
+    if(elements[0] != elements[1]){ return false; }
+
     return true;
 }
 
 //check if the relation is reflexive
 //if for all s \in set1, (s,s) \in r then reflexive
 bool StringRelation::isReflexive(){
-    //You are required to implement this
+
+    if(DEBUG){
+        //cout << "isReflexive debug:" << endl;
+        //set1->print();
+        //print();
+    }
+    
+    // Iterate over every element of child set
+    for(int i = 0; i != set1->size(); i++){ 
+        //if(DEBUG){cout << i << ": " << set1->returnElement(i) << " isMember: " << isMember(createReflexiveElement(set1->returnElement(i))) << endl;}
+        
+        // Check if there is a matching reflexive element
+        if(!isMember(createReflexiveElement(set1->returnElement(i)))){
+            return false;
+        }
+    }
+
+
     return true;
 }
 
