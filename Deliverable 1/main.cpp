@@ -32,6 +32,16 @@ void testInsert()
     ASSERT(s->size() == 2, "Inserting a duplicate element");
 }
 
+void testRemove()
+{
+    SetOfStrings *s = new SetOfStrings();
+    s->insertElement("aaa");
+    s->insertElement("bbb");
+    s->insertElement("aaa");
+    s->removeElement("aaa");
+    ASSERT(s->size() == 1, "Removing an element");
+}
+
 void testSubset()
 {
     SetOfStrings *s = new SetOfStrings();
@@ -84,17 +94,53 @@ void testIsReflexive()
     
     //cout<<"The product set is: \n";
     //out->print();
-    ASSERT(r->isReflexive()==true, "The relation is reflexive indeed");
+    ASSERT(r->isReflexive()==true, "Reflexive relation");
+
+    r->removeElement("3,3");
+
+    ASSERT(r->isReflexive()==false, "Non-reflexive relation");
+
+}
+
+void testIsSymmetric()
+{
+    SetOfStrings *s1 = new SetOfStrings();
+    s1->insertElement("0");
+    s1->insertElement("1");
+    s1->insertElement("2");
+    s1->insertElement("3");
+    //cout<<"The first set is: ";
+    //s1->print();
+    //make s1 the private member
+    StringRelation *r = new StringRelation();
+    r->setInput(s1);
+    r->insertElement("0,0");
+    r->insertElement("0,1");
+    r->insertElement("1,0");
+    r->insertElement("1,1");
+    r->insertElement("2,2");
+    r->insertElement("3,3");
+    r->insertElement("1,3");
+    r->insertElement("3,1");
+    
+    //cout<<"The product set is: \n";
+    //out->print();
+    ASSERT(r->isSymmetric()==true, "Symmetric relation");
+
+    r->removeElement("3,1");
+
+    ASSERT(r->isSymmetric()==false, "Non-symmetric relation");
 }
 
 void runAllTests()
 {
     //testMember();
     testInsert();
+    testRemove();
     testSubset();
     testProduct();
     testIsReflexive();
-    //testRemove();
+    testIsSymmetric();
 }
 
 int main(int argc, const char * argv[])
