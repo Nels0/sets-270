@@ -86,12 +86,12 @@ bool SetControl::Run() {
                 if (!setUI->ReadFromFile(
                         argv.at(1), temps, tempr,
                         (argv.at(2).compare("-v") == 0) ? true : false)) {
-                    // setUI->printError("file"); //print an error message
+                    setUI->printError("file"); // print an error message
                     continue;
                 }
             }
         }
-        // exit cmmand execution (Completed)
+        // exit command execution (Completed)
         else if (argv.at(0).find("exit") != string::npos) {
             exit(0);
         }

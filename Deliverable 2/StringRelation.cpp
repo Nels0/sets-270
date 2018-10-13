@@ -24,6 +24,10 @@ bool StringRelation::isValid() {
         return false;
 }
 
+void StringRelation::appendWeight(int weightval) {
+    weight.push_back(weightval);
+}
+
 // This is one of the main helper function provided as a
 // tokenizer to parse relational elements and separate them into components
 // This takes a relation element in the form "a,b" and returns

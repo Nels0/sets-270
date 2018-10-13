@@ -31,6 +31,7 @@ class StringRelation : public SetOfStrings {
   public:
     void setInput(SetOfStrings *s);
     // creates a relation that is identical to the product set of set1
+    void appendWeight(int weightval);
     bool isValid();
     bool isReflexive();
     bool isSymmetric();

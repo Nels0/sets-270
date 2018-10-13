@@ -1,5 +1,16 @@
 #include "SetUI.h"
 
+/* Function Header Template:
+ * Description
+ *
+ * Arguments:   A:         String
+ *              B:         SetOfStrings
+ *              C:         StringRelation
+ *              D:         Bool
+ *
+ * Returns:     E:         Bool
+ */
+
 SetUI::SetUI() { TopicScreen(); }
 
 // Greet the user and shows the developer name.
@@ -19,12 +30,13 @@ void SetUI::TopicScreen() {
 bool SetUI::ReadFromFile(string filename, SetOfStrings *ss, StringRelation *sr,
                          bool verbose) {
     /* ReadFromFile:
-     *  Reads a set, and binary relations with weights.
+     * Reads a set, and binary relations with weights.
      *
      * Arguments:   Filename:   String
-     *              ss:         SetOfStrings
-     *              sr:         StringRelation
+     *              ss:         SetOfStrings to write to
+     *              sr:         StringRelation to write to
      *              verbose:    Bool
+     *
      * Returns:     Success:    Bool
      */
 
@@ -38,29 +50,33 @@ bool SetUI::ReadFromFile(string filename, SetOfStrings *ss, StringRelation *sr,
     ifstream infile(filename.c_str());
 
     // return false if the file does not exist
-    if (!infile.good())
+    if (!infile.good()) {
         return false;
+    }
 
     getline(infile, line); // Get the first line to extract set members
     line.erase(0, 2);      // Remove '//' in the line
 
     cout << "Extracting set members from the first line: ";
-    vector<string> element;
+    // vector<string> element;
     int i = 0;
     size_t found;
-    while ((found = line.find(",", i)) != std::string::npos) {
-        element.push_back(line.substr(i, found - i));
-        cout << element.at(element.size() - 1) << " ";
-        i = found + 1;
+    while ((found = line.find(",", i)) != std::string::npos) { // Find comma
+        // Add from i to just before comma
+        ss->insertElement(line.substr(i, found - i));
+        // cout << element.at(element.size() - 1) << " ";
+        i = found + 1; // Move i to after comma
     }
-    element.push_back(line.substr(i));
-    cout << element.at(element.size() - 1);
-    cout << endl;
+    // Add from after last comma to end of line
+    ss->insertElement(line.substr(i));
+    // cout << element.at(element.size() - 1);
+    // cout << endl;
 
     getline(infile, line); // To bypass the second line
 
     // read the rest of the file.
     while (getline(infile, line)) {
+        // Remove all the spaces, and erase() does nothing
         line.erase(remove(line.begin(), line.end(), ' '), line.end());
         // find } as the finisher for file reading
         if (line.find("}") != string::npos)
@@ -78,6 +94,16 @@ bool SetUI::ReadFromFile(string filename, SetOfStrings *ss, StringRelation *sr,
 }
 
 bool SetUI::getFromLine(SetOfStrings *ss, StringRelation *sr, string line) {
+    /* GetFromLine:
+     * Gets a binary relation from an opened file
+     *
+     * Arguments:   ss:         SetOfStrings to write to
+     *              sr:         StringRelation to write to
+     *              line:       String to read from
+     *
+     * Returns:     Sucess:     Bool
+     */
+
     vector<string> element;
     int i = 0;
     size_t found;
@@ -87,13 +113,37 @@ bool SetUI::getFromLine(SetOfStrings *ss, StringRelation *sr, string line) {
     }
     element.push_back(line.substr(i, line.find("[", i) - i));
 
-    for (int j = 0; j < (int)element.size() - 1; j++) {
-        cout << element.at(j) << ", ";
-    }
-    cout << element.at(element.size() - 1) << endl;
+    // for (int j = 0; j < (int)element.size() - 1; j++) {
+    //     cout << element.at(j) << ", ";
+    // }
+    // cout << element.at(element.size() - 1) << endl;
 
-    string temp = line.substr(i, line.find(";", i) - i);
-    cout << "weight info: " << temp;
+    string temp = line.substr(line.find("\"") + 1, std::string::npos);
+
+    int tempWeight = stoi(temp, nullptr);
+
+    string relation;
+    std::vector<string>::iterator p;
+
+    for (p = element.begin(); p != element.end(); p++) {
+        if (!ss->isMember(*p)) {
+            // TODO: Error
+            return false;
+        } else {
+            relation.append(*p);
+            relation.append(",");
+        }
+    }
+
+    // Remove trailing "," and add relation from this line
+    relation.erase(relation.end() - 1);
+    sr->insertElement(relation);
+    sr->appendWeight(tempWeight);
+
+    cout << "Relation: " << relation << " Weight: " << tempWeight << endl;
+    // relation.erase(std::string::npos - 1, std::string::npos);
+    // Add weight at the same time, at the same index
+    // not sure how to lol
 
     /*Todo:
      *	Add relation to *sr if and only if
