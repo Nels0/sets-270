@@ -1,0 +1,32 @@
+{
+	"folders": 
+	[
+		{
+			"path": "Deliverable 1",
+			"name": "Deliverable 1"
+		},
+		{
+			"path": "Deliverable 2",
+			"name": "Deliverable 2"
+		}
+	],
+	"settings": 
+	{
+		"ClangFormat": 
+		{
+			"binary": "clang-format",
+			"style": "Custom",
+			"format_on_save": true
+		},
+		"tab_size": 4
+		}
+	},
+	"build_systems":
+	[
+		{
+			"Name": "Make All",
+			"cmd": "make all",
+			"selector": "source.cpp"
+		}
+	]
+}
