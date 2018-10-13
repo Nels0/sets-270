@@ -147,11 +147,11 @@ bool SetOfStrings::subset(SetOfStrings *s) {
     // cout << s->size() << size() << endl;
     // if(DEBUG){s->print();print();}
 
-    std::vector<string>::iterator p1;
+    std::vector<string>::iterator p;
 
-    for (p1 = s->setv.begin(); p1 != s->setv.end(); p1++) {
-        // if(DEBUG){cout << "checking if " << *p1 << " is member." << endl;}
-        if (!isMember(*p1)) {
+    for (p = s->setv.begin(); p != s->setv.end(); p++) {
+        // if(DEBUG){cout << "checking if " << *p << " is member." << endl;}
+        if (!isMember(*p)) {
             return false;
         }
     }

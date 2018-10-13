@@ -182,17 +182,8 @@ bool StringRelation::isReflexiveElement(string s) {
 // if for all s \in set1, (s,s) \in r then reflexive
 bool StringRelation::isReflexive() {
 
-    if (DEBUG) {
-        // cout << "isReflexive debug:" << endl;
-        // set1->print();
-        // print();
-    }
-
     // Iterate over every element of child set
     for (int i = 0; i != set1->size(); i++) {
-        // if(DEBUG){cout << i << ": " << set1->returnElement(i) << " isMember:
-        // " << isMember(createReflexiveElement(set1->returnElement(i))) <<
-        // endl;}
 
         // Check if there is a matching reflexive element
         if (!isMember(createReflexiveElement(set1->returnElement(i)))) {
@@ -228,14 +219,16 @@ bool StringRelation::isTransitive() {
     std::vector<string>::iterator p1, p2;
     std::vector<string> rel1, rel2;
 
-    for (p1 = setv.begin(); p1 != setv.end(); p1++) { // For every element
+    for (p1 = setv.begin(); p1 != setv.end(); p1++) {
+        // For every element
         rel1 = makeTokens(*p1);
-        for (p2 = setv.begin(); p2 != setv.end();
-             p2++) { // Check if any sequential relations exist
+        for (p2 = setv.begin(); p2 != setv.end(); p2++) {
+            // Check if any sequential relations exist
             rel2 = makeTokens(*p2);
-            if (rel1[1] == rel2[0]) { // Check if any sequential relations exist
-                if (!isMember(rel1[0] + "," +
-                              rel2[1])) { // Check if transitive element exists
+            if (rel1[1] == rel2[0]) { // Check if this is a sequential relation
+                if (!isMember(rel1[0] + "," + rel2[1])) {
+                    // Check if transitive element exists
+                    // i.e if a,b and b,c exist, check a,c exists
                     return false;
                 }
             }
@@ -271,14 +264,14 @@ bool StringRelation::isFirstComponent(string s1, string s2) {
 
 // aka: list every member in the equivalence relation that is related to element
 SetOfStrings *StringRelation::computeEquivalenceClass(string element) {
-    // You are required to implement this
     SetOfStrings *out = new SetOfStrings();
-    // std::vector<string::iterator p;
 
-    if (isEquivalence()) {
-        for (int i = 0; i != set1->size(); i++) {
+    if (isEquivalence()) { // Check relation is an equivalence relation
+        for (int i = 0; i != set1->size(); i++) { // foreach in set
             if (isMember(element + "," + set1->returnElement(i))) {
+                // Find if the given element is related to element i in set
                 out->insertElement(set1->returnElement(i));
+                // Append element i to equivalence class
             }
         }
     }
