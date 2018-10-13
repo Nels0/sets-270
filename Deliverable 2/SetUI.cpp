@@ -40,12 +40,6 @@ bool SetUI::ReadFromFile(string filename, SetOfStrings *ss, StringRelation *sr,
      * Returns:     Success:    Bool
      */
 
-    /* Todo:
-     *     This function is NOT completed.
-     *     Reading the data from the input file is done.
-     *     Use it to implement your logic.
-     */
-
     string line;
     ifstream infile(filename.c_str());
 
@@ -57,20 +51,16 @@ bool SetUI::ReadFromFile(string filename, SetOfStrings *ss, StringRelation *sr,
     getline(infile, line); // Get the first line to extract set members
     line.erase(0, 2);      // Remove '//' in the line
 
-    cout << "Extracting set members from the first line: ";
-    // vector<string> element;
     int i = 0;
     size_t found;
     while ((found = line.find(",", i)) != std::string::npos) { // Find comma
         // Add from i to just before comma
         ss->insertElement(line.substr(i, found - i));
-        // cout << element.at(element.size() - 1) << " ";
+
         i = found + 1; // Move i to after comma
     }
     // Add from after last comma to end of line
     ss->insertElement(line.substr(i));
-    // cout << element.at(element.size() - 1);
-    // cout << endl;
 
     getline(infile, line); // To bypass the second line
 
@@ -82,13 +72,20 @@ bool SetUI::ReadFromFile(string filename, SetOfStrings *ss, StringRelation *sr,
         if (line.find("}") != string::npos)
             break;
         // fetch set and relation in the line
-        cout << "Extracting the relation per line: \n";
         if (!getFromLine(ss, sr, line))
             return false;
-        cout << endl;
     }
     infile.close();
     sr->setInput(ss);
+    cout << left << setw(8) // TODO: Fix aligning
+         << ColorText("File reading was successful\nPlease type 'list' to view "
+                      "the members and relations defined in the graph",
+                      GREEN)
+         << "\n"
+         << ColorText("If a directory is opened instead of a file, program "
+                      "will generate incorrect outputs",
+                      BLUE)
+         << endl;
 
     return true;
 }
@@ -113,11 +110,6 @@ bool SetUI::getFromLine(SetOfStrings *ss, StringRelation *sr, string line) {
     }
     element.push_back(line.substr(i, line.find("[", i) - i));
 
-    // for (int j = 0; j < (int)element.size() - 1; j++) {
-    //     cout << element.at(j) << ", ";
-    // }
-    // cout << element.at(element.size() - 1) << endl;
-
     string temp = line.substr(line.find("\"") + 1, std::string::npos);
 
     int tempWeight = stoi(temp, nullptr);
@@ -127,7 +119,7 @@ bool SetUI::getFromLine(SetOfStrings *ss, StringRelation *sr, string line) {
 
     for (p = element.begin(); p != element.end(); p++) {
         if (!ss->isMember(*p)) {
-            // TODO: Error
+            printError("invalidRelation");
             return false;
         } else {
             relation.append(*p);
@@ -140,11 +132,6 @@ bool SetUI::getFromLine(SetOfStrings *ss, StringRelation *sr, string line) {
     sr->insertElement(relation);
     sr->appendWeight(tempWeight);
 
-    cout << "Relation: " << relation << " Weight: " << tempWeight << endl;
-    // relation.erase(std::string::npos - 1, std::string::npos);
-    // Add weight at the same time, at the same index
-    // not sure how to lol
-
     /*Todo:
      *	Add relation to *sr if and only if
      *  thie relation is a valid relation.
@@ -154,6 +141,18 @@ bool SetUI::getFromLine(SetOfStrings *ss, StringRelation *sr, string line) {
      */
 
     return true;
+}
+
+int SetUI::ListMembers(SetOfStrings *model) {
+    // Todo loop i from 0 to model->size() and print and format
+    cout << "help";
+    return 0;
+}
+
+int SetUI::ListMembers(StringRelation *model) {
+    // Todo loop i from 0 to model->size() and print and format
+    // Then do the same for assosc. weights
+    return 0;
 }
 
 void SetUI::printError(string reason) {
@@ -169,7 +168,12 @@ void SetUI::printError(string reason) {
     }
 
     else if (reason.compare("file") == 0) {
-        cout << "file could not be read \n";
+        cout << "File could not be read \n";
+    }
+
+    else if (reason.compare("invalidRelation") == 0) {
+        cout << "Invalid relation in file (Relation refers to non-existent "
+                "element)\n";
     }
 
     /* Todo:

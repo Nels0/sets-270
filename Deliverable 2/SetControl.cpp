@@ -90,7 +90,13 @@ bool SetControl::Run() {
                     continue;
                 }
             }
+
         }
+
+        else if (argv.at(0).compare("list") == 0) {
+
+        }
+
         // exit command execution (Completed)
         else if (argv.at(0).find("exit") != string::npos) {
             exit(0);
