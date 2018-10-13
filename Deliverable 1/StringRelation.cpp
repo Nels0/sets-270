@@ -219,7 +219,23 @@ bool StringRelation::isSymmetric(){
 //check if the relation is transitive
 // for all x,y,z \in set1, (x -> y AND y -> z) implies x -> z
 bool StringRelation::isTransitive(){
-	//You are required to implement this 
+    //Assumes only binary relations
+
+    std::vector<string>::iterator p1, p2;
+    std::vector<string> rel1, rel2;
+
+    for(p1=setv.begin(); p1!=setv.end(); p1++){ //For every element
+        rel1 = makeTokens(*p1);
+        for(p2 = setv.begin(); p2 !=setv.end(); p2++){ //Check if any sequential relations exist
+            rel2 = makeTokens(*p2);
+            if(rel1[1] == rel2[0]){ //Check if any sequential relations exist
+                if(!isMember(rel1[0] + "," + rel2[1])){ //Check if transitive element exists
+                    return false;
+                }
+            }
+        }
+    }
+
     return true;
 }
 
@@ -227,8 +243,11 @@ bool StringRelation::isTransitive(){
 //return false otherwise
 bool StringRelation::isEquivalence(){
 
-	//You are required to implement this
-    return true;
+    //In order of complexity so faster operations can be evaluated first
+	if (isReflexive() && isSymmetric() && isTransitive()){ 
+        return true;
+    }
+    return false;
 }
 
 //s1 is of the form "a" while s2 is of the form "p,q"
@@ -244,9 +263,22 @@ bool StringRelation::isFirstComponent(string s1, string s2){
 
 //Given a member of set1, this function determine the equivalence class
 //for this element s1 i.e. {s| (s,s1) \in R and R is a equivalence relation}
+
+// aka: list every member in the equivalence relation that is related to element
 SetOfStrings *StringRelation::computeEquivalenceClass(string element){
     //You are required to implement this
 	SetOfStrings *out = new SetOfStrings();
+    //std::vector<string::iterator p;
+
+    if(isEquivalence()){
+        for(int i = 0; i != set1->size(); i++){
+            if(isMember(element + "," + set1->returnElement(i))){
+                out->insertElement(returnElement(i));
+            }
+        }
+    }
+
+
     return out;
 }
 

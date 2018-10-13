@@ -132,6 +132,36 @@ void testIsSymmetric()
     ASSERT(r->isSymmetric()==false, "Non-symmetric relation");
 }
 
+void testIsTransitive()
+{
+    SetOfStrings *s1 = new SetOfStrings();
+    s1->insertElement("0");
+    s1->insertElement("1");
+    s1->insertElement("2");
+    s1->insertElement("3");
+    //cout<<"The first set is: ";
+    //s1->print();
+    //make s1 the private member
+    StringRelation *r = new StringRelation();
+    r->setInput(s1);
+    r->insertElement("0,0");
+    r->insertElement("0,1");
+    r->insertElement("1,0");
+    r->insertElement("1,1");
+    r->insertElement("2,2");
+    r->insertElement("3,3");
+    r->insertElement("1,3");
+    r->insertElement("3,1");
+    
+    //cout<<"The product set is: \n";
+    //out->print();
+    ASSERT(r->isSymmetric()==true, "Symmetric relation");
+
+    r->removeElement("3,1");
+
+    ASSERT(r->isSymmetric()==false, "Non-symmetric relation");
+}
+
 void runAllTests()
 {
     //testMember();
