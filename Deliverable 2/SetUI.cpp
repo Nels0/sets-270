@@ -10,7 +10,7 @@ void SetUI::TopicScreen()
 {
 	system("clear");
 	cout <<"----------------------------------------------------------------------"<< endl; // Replace the name with yours
-	cout <<"\033[1;31mSet Calculator\033[0m\nDeveloper Name: " << "\033[1;34mE.g., Partha and Jin (UPI, ID) <-- replace it with your name\033[0m\n"; 
+	cout <<"\033[1;31mSet Calculator\033[0m\nDeveloper Name: " << "\033[1;34mNelson Cook (ncoo162, 181796651)\033[0m\n"; 
 	cout <<"To know available commands, please type 'help'" << endl;
 	cout <<"---------------------------------------------------------------------"<< endl;
 }
