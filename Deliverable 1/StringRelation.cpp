@@ -273,7 +273,7 @@ SetOfStrings *StringRelation::computeEquivalenceClass(string element){
     if(isEquivalence()){
         for(int i = 0; i != set1->size(); i++){
             if(isMember(element + "," + set1->returnElement(i))){
-                out->insertElement(returnElement(i));
+                out->insertElement(set1->returnElement(i));
             }
         }
     }
