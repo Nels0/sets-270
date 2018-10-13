@@ -18,6 +18,16 @@ void SetUI::TopicScreen() {
 
 bool SetUI::ReadFromFile(string filename, SetOfStrings *ss, StringRelation *sr,
                          bool verbose) {
+    /* ReadFromFile:
+     *  Reads a set, and binary relations with weights.
+     *
+     * Arguments:   Filename:   String
+     *              ss:         SetOfStrings
+     *              sr:         StringRelation
+     *              verbose:    Bool
+     * Returns:     Success:    Bool
+     */
+
     /* Todo:
      *     This function is NOT completed.
      *     Reading the data from the input file is done.
@@ -106,6 +116,10 @@ void SetUI::printError(string reason) {
     else if (reason.compare("argument") == 0) {
         cout << "Incorrect command arguments!\n";
         cout << "Please type help to know about the command arguments\n";
+    }
+
+    else if (reason.compare("file") == 0) {
+        cout << "file could not be read \n";
     }
 
     /* Todo:
