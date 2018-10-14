@@ -150,8 +150,8 @@ bool StringRelation::isTransitive() {
         for (p2 = setv.begin(); p2 != setv.end(); p2++) {
             // Check if any sequential relations exist
             rel2 = makeTokens(*p2);
-            if (rel1[1] == rel2[0]) { // Check if this is a sequential relation
-                if (!isMember(rel1[0] + "," + rel2[1])) {
+            if (rel1.at(1) == rel2.at(0)) { // Check if this is a sequential relation
+                if (!isMember(rel1.at(0) + "," + rel2.at(1))) {
                     // Check if transitive element exists
                     // i.e if a,b and b,c exist, check a,c exists
                     return false;

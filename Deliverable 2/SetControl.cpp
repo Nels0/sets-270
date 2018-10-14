@@ -7,8 +7,7 @@
 #include "SetControl.h"
 
 SetControl::SetControl() {
-    cout << "Initializing the calculator, please wait! ... \n"
-         << endl;
+    cout << "Initializing the calculator, please wait! ... \n" << endl;
 
     // instansiate all members
     setUI         = new SetUI();
@@ -90,12 +89,14 @@ bool SetControl::Run() {
                 relationModel = tempr;
             } else {
                 // if the file cannot be read
-                if (!setUI->ReadFromFile(
-                        argv.at(1), temps, tempr,
-                        (argv.at(2).compare("-v") == 0) ? true : false)) {
+                if (!setUI->ReadFromFile(argv.at(1), temps, tempr, (argv.at(2).compare("-v") == 0) ? true : false)) {
                     setUI->printError("file"); // print an error message
                     continue;
                 } else {
+                    // Delete old relation to prevent memory leak
+                    delete setModel;
+                    delete relationModel;
+                    // reassign pointers
                     setModel      = temps;
                     relationModel = tempr;
                 }
@@ -146,6 +147,23 @@ bool SetControl::Run() {
         }
 
         else if (argv.at(0).compare("eqclass") == 0) {
+            // cout << "argc = " << argc << endl;
+            if (argc != 2) {
+                setUI->printError("argument");
+                continue;
+            } else if (setModel->isEmpty() || relationModel->isEmpty()) {
+                setUI->printError("notLoaded");
+                continue;
+            }
+
+            SetOfStrings *tempEQClass = relationModel->computeEquivalenceClass(argv.at(1));
+
+            if (tempEQClass->isEmpty()) {
+                setUI->printError("eqclassfailure");
+                continue;
+            } else {
+                setUI->printEquivalenceClass(argv.at(1), tempEQClass);
+            }
 
         }
         // exit command execution (Completed)

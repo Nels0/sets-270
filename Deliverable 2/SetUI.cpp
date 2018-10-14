@@ -44,6 +44,7 @@ bool SetUI::ReadFromFile(string filename, SetOfStrings *ss, StringRelation *sr, 
 
     // return false if the file does not exist
     if (!infile.good()) {
+        printError("file");
         return false;
     }
 
@@ -149,8 +150,7 @@ int SetUI::ListMembers(StringRelation *model) {
 
     int i = 0;
 
-    cout << "The members of the " << ColorText("relations", YELLOW)
-         << " are:\n=> {";
+    cout << "The members of the " << ColorText("relations", YELLOW) << " are:\n=> {";
     for (i = 0; i != model->size() - 1; i++) {
         cout << "(" << ColorText(model->returnElement(i), YELLOW) << "), ";
     }
@@ -183,29 +183,49 @@ void SetUI::printProperties(string property, bool isProperty) {
     return;
 }
 
+void SetUI::printEquivalenceClass(string member, SetOfStrings *ss) {
+    int i = 0;
+    cout << "=> [" << ColorText(member, BLUE) << "] = {";
+    for (i = 0; i < ss->size() - 1; ++i) {
+        if (ss->returnElement(i).compare("\n") == 0) {
+            printError("command");
+            continue;
+        } else {
+            cout << ColorText(ss->returnElement(i), YELLOW) << ", ";
+        }
+    }
+    cout << ColorText(ss->returnElement(i), YELLOW) << "}" << endl;
+}
+
 void SetUI::printError(string reason) {
     // error message if the command cannot be understood
     if (reason.compare("command") == 0) {
-        cout << "Command cannot be understood. Please enter help to see the "
-                "available commands\n";
+        cout << ColorText("Command cannot be understood. Please enter help to see the available commands\n", RED);
     }
     // error message if the command argument is incorrect
     else if (reason.compare("argument") == 0) {
-        cout << "Incorrect command arguments!\n";
-        cout << "Please type help to know about the command arguments\n";
-    }
-
-    else if (reason.compare("file") == 0) {
-        cout << "File could not be read \n";
+        cout << ColorText("Incorrect command arguments!\n", RED);
+        cout << ColorText("Type help to know about the command arguments\n", RED);
     }
 
     else if (reason.compare("invalidRelation") == 0) {
-        cout << "Invalid relation in file (Relation refers to non-existent "
-                "element)\n";
+        cout << ColorText("Invalid relation in file (Relation refers to non-existent element)\n", RED);
     }
 
     else if (reason.compare("notLoaded") == 0) {
-        cout << "No relation loaded! load a relation from file and try again\n";
+        cout << ColorText("No relation loaded! load a relation from file and try again\n", RED);
+    }
+
+    else if (reason.compare("eqclassfailure") == 0) {
+        cout << ColorText("Equivalence class request could not be executed\nPossibly the string does", RED)
+             << ColorText(" not exist in the set or there is no equivalence relation\n", RED);
+    }
+
+    else if (reason.compare("file") == 0) {
+        cout << ColorText(
+            "Error occured while reading the input file. Possible reasons:\n1. File does not exist\n2. Contains a invalid graph\n3. Unreadable "
+            "data\nGraph could not be loaded successfully\n",
+            RED);
     }
 }
 
@@ -300,8 +320,7 @@ void SetUI::Help() {
 // clang-format on
 
 void SetUI::printShortestPath(int distance, string path) {
-    cout << "  The shortest path distance: "
-         << ColorText(to_string(distance), GREEN) << endl;
+    cout << "  The shortest path distance: " << ColorText(to_string(distance), GREEN) << endl;
     cout << "  The path is: " << ColorText(path, BLUE) << endl;
 }
 
