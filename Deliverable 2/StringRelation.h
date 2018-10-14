@@ -1,6 +1,7 @@
 #ifndef STRINGRELATION_H_
 #define STRINGRELATION_H_
 #include "SetOfStrings.h"
+#include <list>
 
 class StringRelation : public SetOfStrings {
   private:
@@ -41,7 +42,7 @@ class StringRelation : public SetOfStrings {
 
     int getWeight(int idx);
 
-    bool isReachable(string start, string finish);
+    bool isReachable(string start, string finish, std::list<string> *visited);
 
     // Finding the shortest path
     int computeShortest(string source, string destination);

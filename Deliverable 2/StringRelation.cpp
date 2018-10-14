@@ -201,7 +201,7 @@ SetOfStrings *StringRelation::computeEquivalenceClass(string element) {
     return out;
 }
 
-bool StringRelation::isReachable(string start, string finish) {
+bool StringRelation::isReachable(string start, string finish, std::list<string> *visited) {
 
     // TODO stop this getting caught in an infite loop
 
@@ -213,7 +213,7 @@ bool StringRelation::isReachable(string start, string finish) {
         for (i = 0; i != set1->size(); i++) {
             string nextElement = returnElement(i);
             if ((nextElement.compare(start) == 0) && isMember(start + "," + nextElement)) {
-                isReachable(nextElement, finish);
+                // isReachable(nextElement, finish);
             }
         }
         return false;

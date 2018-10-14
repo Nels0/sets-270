@@ -201,7 +201,7 @@ void SetUI::printReachable(bool reachable, bool self) {
     if (reachable) {
         cout << ColorText("Reachable", GREEN) << endl;
         if (self) {
-            cout << ColorText("(Source == Destination)", BLUE);
+            cout << ColorText("(Source == Destination)", BLUE) << endl;
         }
     } else {
         cout << ColorText("Not reachable", RED) << endl;
@@ -237,6 +237,8 @@ void SetUI::printError(string reason) {
             "Error occured while reading the input file. Possible reasons:\n1. File does not exist\n2. Contains a invalid graph\n3. Unreadable "
             "data\nGraph could not be loaded successfully\n",
             RED);
+    } else if (reason.compare("nonmember") == 0) {
+        cout << ColorText("Argument was not a member of the set.\n", RED);
     }
 }
 

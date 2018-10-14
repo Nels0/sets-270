@@ -176,8 +176,13 @@ bool SetControl::Run() {
                 continue;
             }
 
-            if (argv.at(1).compare(argv.at(2)) == 0) {
+            if (!setModel->isMember(argv.at(1)) || !setModel->isMember(argv.at(2))) {
+                setUI->printError("nonmember");
+            } else if (argv.at(1).compare(argv.at(2)) == 0) {
                 setUI->printReachable(true, true);
+            } else {
+                std::list<string> *visited = new std::list<string>;
+                setUI->printReachable(relationModel->isReachable(argv.at(1), argv.at(2), visited), false);
             }
 
         }
