@@ -7,7 +7,8 @@
 #include "SetControl.h"
 
 SetControl::SetControl() {
-    cout << "Initializing the calculator, please wait! ... \n" << endl;
+    cout << "Initializing the calculator, please wait! ... \n"
+         << endl;
 
     // instansiate all members
     setUI         = new SetUI();
@@ -109,6 +110,29 @@ bool SetControl::Run() {
             } else {
                 setUI->ListMembers(setModel);
                 setUI->ListMembers(relationModel);
+            }
+        }
+
+        else if (argv.at(0).compare("check") == 0) {
+
+            if (setModel->isEmpty() || relationModel->isEmpty()) {
+                setUI->printError("notLoaded");
+                continue;
+            } else {
+                if (argc == 2) {
+                    if (argv.at(1).compare("-r") == 0) {
+                        setUI->printProperties("reflexive", relationModel->isReflexive());
+                    } else if (argv.at(1).compare("-s") == 0) {
+                        setUI->printProperties("symmetrical", relationModel->isSymmetric());
+                    } else if (argv.at(1).compare("-t") == 0) {
+                        setUI->printProperties("transitive", relationModel->isTransitive());
+                    } else if (argv.at(1).compare("-e") == 0) {
+                        setUI->printProperties("equivalence", relationModel->isEquivalence());
+                    }
+                } else {
+                    setUI->printError("argument");
+                    continue;
+                }
             }
         }
 

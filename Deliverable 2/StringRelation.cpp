@@ -190,7 +190,7 @@ SetOfStrings *StringRelation::computeEquivalenceClass(string element) {
 
     SetOfStrings *out = new SetOfStrings();
 
-    if (isEquivalence()) { // Check relation is an equivalence relation
+    if (isEquivalence()) {                        // Check relation is an equivalence relation
         for (int i = 0; i != set1->size(); i++) { // foreach in set
             if (isMember(element + "," + set1->returnElement(i))) {
                 // Find if the given element is related to element i in set

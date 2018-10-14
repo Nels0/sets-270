@@ -160,9 +160,27 @@ int SetUI::ListMembers(StringRelation *model) {
     for (i = 0; i != model->size() - 1; i++) {
         cout << ColorText(to_string(model->getWeight(i)), BLUE) << ", ";
     }
-    cout << ColorText(to_string(model->getWeight(i + 1)), BLUE) << "}" << endl;
+    cout << ColorText(to_string(model->getWeight(i)), BLUE) << "}" << endl;
 
     return 0;
+}
+
+void SetUI::printProperties(string property, bool isProperty) {
+    string printString = "The relation is ";
+
+    if (!isProperty) {
+        printString.append("not ");
+    }
+    printString.append(property);
+
+    if (isProperty) {
+        cout << ColorText(printString, GREEN) << endl;
+    } else {
+        cout << ColorText(printString, RED) << endl;
+        ;
+    }
+
+    return;
 }
 
 void SetUI::printError(string reason) {
