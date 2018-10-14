@@ -94,28 +94,72 @@ string StringRelation::returnSecondComponent(string s) {
 // return false otherwise
 bool StringRelation::isReflexiveElement(string s) {
 
-    // You are required to implement this as this
+    std::vector<string> elements = makeTokens(s);
+
+    if (elements[0] != elements[1]) {
+        return false;
+    }
+
     return true;
 }
 
 // check if the relation is reflexive
 // if for all s \in set1, (s,s) \in r then reflexive
 bool StringRelation::isReflexive() {
-    // You are required to implement this
+
+    // Iterate over every element of child set
+    for (int i = 0; i != set1->size(); i++) {
+
+        // Check if there is a matching reflexive element
+        if (!isMember(createReflexiveElement(set1->returnElement(i)))) {
+            return false;
+        }
+    }
+
     return true;
 }
 
 // check if the relation is symmetric
 // if for any s1,s2 \in set1, (s1,s2) \in R implies (s2,s1) \in R
 bool StringRelation::isSymmetric() {
-    // You are required to implement this
+
+    std::vector<string>::iterator p;
+
+    for (p = setv.begin(); p != setv.end(); p++) {
+        // cout << "checking if " << computeDual(*p) << " isMember: " <<
+        // isMember(computeDual(*p)) << endl;
+        if (!isMember(computeDual(*p))) {
+            return false;
+        }
+    }
+
     return true;
 }
 
 // check if the relation is transitive
 // for all x,y,z \in set1, (x -> y AND y -> z) implies x -> z
 bool StringRelation::isTransitive() {
-    // You are required to implement this
+    // Assumes only binary relations
+
+    std::vector<string>::iterator p1, p2;
+    std::vector<string> rel1, rel2;
+
+    for (p1 = setv.begin(); p1 != setv.end(); p1++) {
+        // For every element
+        rel1 = makeTokens(*p1);
+        for (p2 = setv.begin(); p2 != setv.end(); p2++) {
+            // Check if any sequential relations exist
+            rel2 = makeTokens(*p2);
+            if (rel1[1] == rel2[0]) { // Check if this is a sequential relation
+                if (!isMember(rel1[0] + "," + rel2[1])) {
+                    // Check if transitive element exists
+                    // i.e if a,b and b,c exist, check a,c exists
+                    return false;
+                }
+            }
+        }
+    }
+
     return true;
 }
 
@@ -123,22 +167,39 @@ bool StringRelation::isTransitive() {
 // return false otherwise
 bool StringRelation::isEquivalence() {
 
-    // You are required to implement this
-    return true;
+    // In order of complexity so faster operations can be evaluated first
+    if (isReflexive() && isSymmetric() && isTransitive()) {
+        return true;
+    }
+    return false;
 }
 
 // s1 is of the form "a" while s2 is of the form "p,q"
 // if a==p then return true
 bool StringRelation::isFirstComponent(string s1, string s2) {
-    // You are required to implement this
-    return true;
+    std::vector<string> s2Tokens = makeTokens(s2);
+    if (s1 == s2Tokens[0]) {
+        return true;
+    }
+    return false;
 }
 
 // Given a member of set1, this function determine the equivalence class
 // for this element s1 i.e. {s| (s,s1) \in R and R is a equivalence relation}
 SetOfStrings *StringRelation::computeEquivalenceClass(string element) {
-    // You are required to implement this
+
     SetOfStrings *out = new SetOfStrings();
+
+    if (isEquivalence()) { // Check relation is an equivalence relation
+        for (int i = 0; i != set1->size(); i++) { // foreach in set
+            if (isMember(element + "," + set1->returnElement(i))) {
+                // Find if the given element is related to element i in set
+                out->insertElement(set1->returnElement(i));
+                // Append element i to equivalence class
+            }
+        }
+    }
+
     return out;
 }
 

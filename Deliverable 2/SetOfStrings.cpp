@@ -28,18 +28,38 @@ void SetOfStrings::insertElement(string s) {
 }
 
 void SetOfStrings::removeElement(string s) {
-    // You have implemented this in the lab
+    vector<string>::iterator p = setv.begin();
+    while (p != setv.end()) {
+        if (*p == s) {
+            setv.erase(p);
+            return;
+        }
+        p++;
+    }
 }
 
 SetOfStrings *SetOfStrings::setUnion(SetOfStrings *s) {
-    // You have implemented this in the lab
+    SetOfStrings *s1 = new SetOfStrings();
+    vector<string>::iterator p;
 
-    SetOfStrings *out = new SetOfStrings();
-    return out;
+    for (p = setv.begin(); p != setv.end(); p++) {
+        s1->insertElement(*p);
+    }
+    for (p = s->setv.begin(); p != s->setv.end(); p++) {
+        s1->insertElement(*p); // Duplicate elements handled
+    }
+
+    return s1;
 }
 
 bool SetOfStrings::isEqual(SetOfStrings *s) {
-    // You have implemented this in the lab
+    vector<string>::iterator p;
+    for (p = setv.begin(); p != setv.end(); p++) {
+        if (!s->isMember(*p)) {
+            return false;
+        }
+    }
+
     return true;
 }
 
@@ -51,12 +71,31 @@ string SetOfStrings::returnElement(int index) {
 }
 
 SetOfStrings *SetOfStrings::product(SetOfStrings *s) {
-    // You are required to implement this as this
     SetOfStrings *out = new SetOfStrings();
+
+    std::vector<string>::iterator p1;
+
+    vector<string>::iterator p = setv.begin();
+    while (p != setv.end()) {
+
+        p1 = s->setv.begin();
+        while (p1 != s->setv.end()) {
+            out->insertElement("(" + *p + "," + *p1 + ")");
+
+            ++p1;
+        }
+
+        ++p;
+    }
+
     return out;
 }
 
 bool SetOfStrings::subset(SetOfStrings *s) {
-    // You are required to implement this as this
+    for (p = s->setv.begin(); p != s->setv.end(); p++) {
+        if (!isMember(*p)) {
+            return false;
+        }
+    }
     return true;
 }
