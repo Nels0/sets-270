@@ -197,9 +197,12 @@ void SetUI::printEquivalenceClass(string member, SetOfStrings *ss) {
     cout << ColorText(ss->returnElement(i), YELLOW) << "}" << endl;
 }
 
-void SetUI::printReachable(bool reachable) {
+void SetUI::printReachable(bool reachable, bool self) {
     if (reachable) {
         cout << ColorText("Reachable", GREEN) << endl;
+        if (self) {
+            cout << ColorText("(Source == Destination)", BLUE);
+        }
     } else {
         cout << ColorText("Not reachable", RED) << endl;
     }

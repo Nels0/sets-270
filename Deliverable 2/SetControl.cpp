@@ -177,7 +177,7 @@ bool SetControl::Run() {
             }
 
             if (argv.at(1).compare(argv.at(2)) == 0) {
-                setUI->printReachable(true);
+                setUI->printReachable(true, true);
             }
 
         }
