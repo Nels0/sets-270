@@ -41,6 +41,8 @@ class StringRelation : public SetOfStrings {
 
     int getWeight(int idx);
 
+    bool isReachable(string start, string finish);
+
     // Finding the shortest path
     int computeShortest(string source, string destination);
 };

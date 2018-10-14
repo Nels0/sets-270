@@ -197,6 +197,14 @@ void SetUI::printEquivalenceClass(string member, SetOfStrings *ss) {
     cout << ColorText(ss->returnElement(i), YELLOW) << "}" << endl;
 }
 
+void SetUI::printReachable(bool reachable) {
+    if (reachable) {
+        cout << ColorText("Reachable", GREEN) << endl;
+    } else {
+        cout << ColorText("Not reachable", RED) << endl;
+    }
+}
+
 void SetUI::printError(string reason) {
     // error message if the command cannot be understood
     if (reason.compare("command") == 0) {

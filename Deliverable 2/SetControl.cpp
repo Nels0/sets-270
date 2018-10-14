@@ -166,6 +166,22 @@ bool SetControl::Run() {
             }
 
         }
+
+        else if (argv.at(0).compare("reachable") == 0) {
+            if (argc != 3) { // TODO: Put these into a function called  argCheck(int argc) or something
+                setUI->printError("argument");
+                continue;
+            } else if (setModel->isEmpty() || relationModel->isEmpty()) {
+                setUI->printError("notLoaded");
+                continue;
+            }
+
+            if (argv.at(1).compare(argv.at(2)) == 0) {
+                setUI->printReachable(true);
+            }
+
+        }
+
         // exit command execution (Completed)
         else if (argv.at(0).find("exit") != string::npos) {
             exit(0);

@@ -17,9 +17,6 @@ class SetControl {
     SetOfStrings *setModel;
     StringRelation *relationModel;
 
-    // int isReachable(string src,string dst); // this supposed to be in the
-    // model... But I programmed here for assignment separation
-
   public:
     // constructor/destructor
     SetControl();

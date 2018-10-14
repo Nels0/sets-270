@@ -24,9 +24,7 @@ bool StringRelation::isValid() {
         return false;
 }
 
-void StringRelation::appendWeight(int weightval) {
-    weight.push_back(weightval);
-}
+void StringRelation::appendWeight(int weightval) { weight.push_back(weightval); }
 
 int StringRelation::getWeight(int idx) { return weight.at(idx); }
 
@@ -203,10 +201,27 @@ SetOfStrings *StringRelation::computeEquivalenceClass(string element) {
     return out;
 }
 
+bool StringRelation::isReachable(string start, string finish) {
+
+    // TODO stop this getting caught in an infite loop
+
+    int i = 0;
+
+    if (isMember(start + "," + finish)) {
+        return true;
+    } else {
+        for (i = 0; i != set1->size(); i++) {
+            string nextElement = returnElement(i);
+            if ((nextElement.compare(start) == 0) && isMember(start + "," + nextElement)) {
+                isReachable(nextElement, finish);
+            }
+        }
+        return false;
+    }
+}
+
 // Dijkstra algorithm implementation
 // Input: source node, destination node
 // Output: path length (integer)
 // Note: the generated path is also stored in "path" variable
-int StringRelation::computeShortest(string source, string destination) {
-    return 0;
-}
+int StringRelation::computeShortest(string source, string destination) { return 0; }

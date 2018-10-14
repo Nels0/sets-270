@@ -75,9 +75,9 @@ class SetUI {
     // Return false if there is an error while reading the file.
     // While reading the file, it stores data in *ss and *sr appropriately.
     // When verbose option is true, it prints ALL the lines in the file.
-    bool ReadFromFile(string filename, SetOfStrings *ss, StringRelation *sr,
-                      bool verbose);
+    bool ReadFromFile(string filename, SetOfStrings *ss, StringRelation *sr, bool verbose);
 
+    void printReachable(bool reachable);
     // method for printing the result of Dijkstra's algorithm applied to the
     // input graph the distance is the shortest distance to the destination the
     // path is a string which contains the path information in the format "a ->
