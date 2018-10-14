@@ -10,12 +10,16 @@ SetControl::SetControl() {
     cout << "Initializing the calculator, please wait! ... \n" << endl;
 
     // instansiate all members
-    setUI = new SetUI();
+    setUI         = new SetUI();
+    setModel      = new SetOfStrings();
+    relationModel = new StringRelation();
 }
 
 SetControl::~SetControl() {
     // dispose all members
     delete setUI;
+    delete setModel;
+    delete relationModel;
 }
 
 bool SetControl::Run() {
@@ -79,22 +83,33 @@ bool SetControl::Run() {
             }
             SetOfStrings *temps   = new SetOfStrings();
             StringRelation *tempr = new StringRelation();
-            if (argc == 2)
+            if (argc == 2) {
                 setUI->ReadFromFile(argv.at(1), temps, tempr, false);
-            else {
+                setModel      = temps;
+                relationModel = tempr;
+            } else {
                 // if the file cannot be read
                 if (!setUI->ReadFromFile(
                         argv.at(1), temps, tempr,
                         (argv.at(2).compare("-v") == 0) ? true : false)) {
                     setUI->printError("file"); // print an error message
                     continue;
+                } else {
+                    setModel      = temps;
+                    relationModel = tempr;
                 }
             }
 
         }
 
         else if (argv.at(0).compare("list") == 0) {
-
+            // cout << "Listing...";
+            if (setModel->isEmpty() || relationModel->isEmpty()) {
+                setUI->printError("notLoaded");
+            } else {
+                setUI->ListMembers(setModel);
+                setUI->ListMembers(relationModel);
+            }
         }
 
         // exit command execution (Completed)

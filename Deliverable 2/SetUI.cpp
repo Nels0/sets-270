@@ -144,14 +144,33 @@ bool SetUI::getFromLine(SetOfStrings *ss, StringRelation *sr, string line) {
 }
 
 int SetUI::ListMembers(SetOfStrings *model) {
-    // Todo loop i from 0 to model->size() and print and format
-    cout << "help";
+
+    int i = 0;
+    cout << "The members of the " << ColorText("sets", BLUE) << " are:\n=> {";
+    for (i = 0; i != model->size() - 1; i++) {
+        cout << ColorText(model->returnElement(i), BLUE) << ", ";
+    }
+    cout << ColorText(model->returnElement(i), BLUE) << "}" << endl;
     return 0;
 }
 
 int SetUI::ListMembers(StringRelation *model) {
-    // Todo loop i from 0 to model->size() and print and format
-    // Then do the same for assosc. weights
+
+    int i = 0;
+
+    cout << "The members of the " << ColorText("relations", YELLOW)
+         << " are:\n=> {";
+    for (i = 0; i != model->size() - 1; i++) {
+        cout << "(" << ColorText(model->returnElement(i), YELLOW) << "), ";
+    }
+    cout << "(" << ColorText(model->returnElement(i), YELLOW) << ")}" << endl;
+
+    cout << "The associated " << ColorText("weights", BLUE) << " are:\n=> {";
+    for (i = 0; i != model->size() - 1; i++) {
+        cout << ColorText(to_string(model->getWeight(i)), BLUE) << ", ";
+    }
+    cout << ColorText(to_string(model->getWeight(i + 1)), BLUE) << "}" << endl;
+
     return 0;
 }
 
@@ -176,6 +195,10 @@ void SetUI::printError(string reason) {
                 "element)\n";
     }
 
+    else if (reason.compare("notLoaded") == 0) {
+        cout << "No relation loaded! load a relation from file and try again\n";
+    }
+
     /* Todo:
      * You must think about different error scenarios.
      * Prepare error messages.
@@ -192,6 +215,7 @@ string SetUI::GetCommand() {
     cout << ">> ";
 
     getline(cin, commandInput);
+    // cout << commandInput << endl;
     return commandInput;
 }
 
