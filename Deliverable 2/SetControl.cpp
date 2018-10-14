@@ -137,7 +137,16 @@ bool SetControl::Run() {
         }
 
         else if (argv.at(0).compare("clear") == 0) {
-            system("clear");
+            if (argc == 1) {
+                system("clear");
+            } else {
+                setUI->printError("argument");
+                continue;
+            }
+        }
+
+        else if (argv.at(0).compare("eqclass") == 0) {
+
         }
         // exit command execution (Completed)
         else if (argv.at(0).find("exit") != string::npos) {
