@@ -27,8 +27,7 @@ void SetUI::TopicScreen() {
          << endl;
 }
 
-bool SetUI::ReadFromFile(string filename, SetOfStrings *ss, StringRelation *sr,
-                         bool verbose) {
+bool SetUI::ReadFromFile(string filename, SetOfStrings *ss, StringRelation *sr, bool verbose) {
     /* ReadFromFile:
      * Reads a set, and binary relations with weights.
      *
@@ -132,14 +131,6 @@ bool SetUI::getFromLine(SetOfStrings *ss, StringRelation *sr, string line) {
     sr->insertElement(relation);
     sr->appendWeight(tempWeight);
 
-    /*Todo:
-     *	Add relation to *sr if and only if
-     *  thie relation is a valid relation.
-     *  Otherwise, return false.
-     *  Also, extract the weight information from the string [label="x"]
-     *  The weight number is found in between the quotation mark " "
-     */
-
     return true;
 }
 
@@ -198,16 +189,6 @@ void SetUI::printError(string reason) {
     else if (reason.compare("notLoaded") == 0) {
         cout << "No relation loaded! load a relation from file and try again\n";
     }
-
-    /* Todo:
-     * You must think about different error scenarios.
-     * Prepare error messages.
-     * Some examples are given below:
-            1. emit an error message if the input file does not exist or
-     contains wrong data.
-            2. emit an error message if the user trying to find the equivalence
-     class for a string that does not have equivalence relation
-    */
 }
 
 string SetUI::GetCommand() {
