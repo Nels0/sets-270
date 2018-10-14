@@ -39,6 +39,8 @@ class StringRelation : public SetOfStrings {
     bool isEquivalence();
     SetOfStrings *computeEquivalenceClass(string element);
 
+    int getWeight(int idx);
+
     // Finding the shortest path
     int computeShortest(string source, string destination);
 };
