@@ -136,6 +136,9 @@ bool SetControl::Run() {
             }
         }
 
+        else if (argv.at(0).compare("clear") == 0) {
+            system("clear");
+        }
         // exit command execution (Completed)
         else if (argv.at(0).find("exit") != string::npos) {
             exit(0);
