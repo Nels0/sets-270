@@ -85,6 +85,11 @@ bool SetControl::Run() {
             StringRelation *tempr = new StringRelation();
             if (argc == 2) {
                 setUI->ReadFromFile(argv.at(1), temps, tempr, false);
+
+                // Delete old relation to prevent memory leak
+                delete setModel;
+                delete relationModel;
+                // reassign pointers
                 setModel      = temps;
                 relationModel = tempr;
             } else {
