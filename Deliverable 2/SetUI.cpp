@@ -77,12 +77,11 @@ bool SetUI::ReadFromFile(string filename, SetOfStrings *ss, StringRelation *sr, 
     }
     infile.close();
     sr->setInput(ss);
-    cout << left << setw(8) // TODO: Fix aligning
-         << ColorText("File reading was successful\nPlease type 'list' to view "
+    cout << ColorText("  File reading was successful\n  Please type 'list' to view "
                       "the members and relations defined in the graph",
                       GREEN)
          << "\n"
-         << ColorText("If a directory is opened instead of a file, program "
+         << ColorText("  If a directory is opened instead of a file, program "
                       "will generate incorrect outputs",
                       BLUE)
          << endl;
@@ -138,7 +137,7 @@ bool SetUI::getFromLine(SetOfStrings *ss, StringRelation *sr, string line) {
 int SetUI::ListMembers(SetOfStrings *model) {
 
     int i = 0;
-    cout << "The members of the " << ColorText("sets", BLUE) << " are:\n=> {";
+    cout << "  The members of the " << ColorText("sets", BLUE) << " are:\n  => {";
     for (i = 0; i != model->size() - 1; i++) {
         cout << ColorText(model->returnElement(i), BLUE) << ", ";
     }
@@ -150,13 +149,13 @@ int SetUI::ListMembers(StringRelation *model) {
 
     int i = 0;
 
-    cout << "The members of the " << ColorText("relations", YELLOW) << " are:\n=> {";
+    cout << "  The members of the " << ColorText("relations", YELLOW) << " are:\n  => {";
     for (i = 0; i != model->size() - 1; i++) {
         cout << "(" << ColorText(model->returnElement(i), YELLOW) << "), ";
     }
     cout << "(" << ColorText(model->returnElement(i), YELLOW) << ")}" << endl;
 
-    cout << "The associated " << ColorText("weights", BLUE) << " are:\n=> {";
+    cout << "  The associated " << ColorText("weights", BLUE) << " are:\n  => {";
     for (i = 0; i != model->size() - 1; i++) {
         cout << ColorText(to_string(model->getWeight(i)), BLUE) << ", ";
     }
@@ -166,7 +165,7 @@ int SetUI::ListMembers(StringRelation *model) {
 }
 
 void SetUI::printProperties(string property, bool isProperty) {
-    string printString = "The relation is ";
+    string printString = "  The relation is ";
 
     if (!isProperty) {
         printString.append("not ");
@@ -184,8 +183,9 @@ void SetUI::printProperties(string property, bool isProperty) {
 }
 
 void SetUI::printEquivalenceClass(string member, SetOfStrings *ss) {
+
     int i = 0;
-    cout << "=> [" << ColorText(member, BLUE) << "] = {";
+    cout << "  => [" << ColorText(member, BLUE) << "] = {";
     for (i = 0; i < ss->size() - 1; ++i) {
         if (ss->returnElement(i).compare("\n") == 0) {
             printError("command");
@@ -198,6 +198,7 @@ void SetUI::printEquivalenceClass(string member, SetOfStrings *ss) {
 }
 
 void SetUI::printReachable(bool reachable, bool self) {
+    cout << left << setw(2) << " ";
     if (reachable) {
         cout << ColorText("Reachable", GREEN) << endl;
         if (self) {
@@ -209,6 +210,8 @@ void SetUI::printReachable(bool reachable, bool self) {
 }
 
 void SetUI::printError(string reason) {
+
+    cout << left << setw(2) << " ";
     // error message if the command cannot be understood
     if (reason.compare("command") == 0) {
         cout << ColorText("Command cannot be understood. Please enter help to see the available commands\n", RED);
