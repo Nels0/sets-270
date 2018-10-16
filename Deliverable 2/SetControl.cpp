@@ -177,8 +177,8 @@ bool SetControl::Run() {
 
         else if (argv.at(0).compare("path") == 0) {
             if (argCheck(3, argc) && loadedCheck()) {
-                int distance = 3;
-                string path  = "placeholder";
+                int distance = relationModel->computeShortest(argv.at(1), argv.at(2));
+                string path  = relationModel->getPath();
                 setUI->printShortestPath(distance, path);
             }
         }

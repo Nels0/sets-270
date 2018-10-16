@@ -28,6 +28,17 @@ void StringRelation::appendWeight(int weightval) { weight.push_back(weightval); 
 
 int StringRelation::getWeight(int idx) { return weight.at(idx); }
 
+int StringRelation::getWeight(string s) {
+    std::vector<string>::iterator p;
+
+    for (p = setv.begin(); p != setv.end(); p++) {
+        if (*p == s) {
+            return weight.at(p - setv.begin());
+        }
+    }
+    return -1;
+}
+
 // This is one of the main helper function provided as a
 // tokenizer to parse relational elements and separate them into components
 // This takes a relation element in the form "a,b" and returns
@@ -220,8 +231,117 @@ bool StringRelation::isReachable(string start, string finish, std::list<string> 
     }
 }
 
+std::string StringRelation::pathTrace(string source, int endidx, string previous[]) {
+
+    // TODO: figure out how to make the arrows look right
+
+    if (previous[endidx].compare(source) == 0) {
+        // cout << "foudn bottom" << endl;
+        return previous[endidx] + " -> ";
+
+    } else {
+
+        int nextEndidx = -1;
+        for (int i = 0; i != set1->size(); i++) {
+            // cout << "checking " << i << "th element" << endl;
+            // cout << "Checking " << set1->returnElement(i) << " Against " << previous[endidx] << endl;
+            if (set1->returnElement(i).compare(previous[endidx]) == 0) {
+                nextEndidx = i;
+            }
+        }
+        if (nextEndidx == -1) {
+            // cout << "previous node not found" << endl;
+            return "\n";
+        }
+
+        // cout << " Current end: " << endidx << "\n Next End:" << nextEndidx << endl;
+        return pathTrace(source, nextEndidx, previous) + previous[endidx] + " -> ";
+    }
+}
+
 // Dijkstra algorithm implementation
 // Input: source node, destination node
 // Output: path length (integer)
 // Note: the generated path is also stored in "path" variable
-int StringRelation::computeShortest(string source, string destination) { return 0; }
+int StringRelation::computeShortest(string source, string destination) {
+
+    int MAX_INT = std::numeric_limits<int>::max();
+
+    bool visited[setv.size()]; // Default initialisation is to false;
+    int dist[setv.size()];
+    std::string previous[setv.size()];
+
+    // int sourceNodeidx;
+    int destNodeidx = -1;
+
+    int i = 0;
+    for (i = 0; i != set1->size(); i++) { // Initialisation
+        visited[i] = false;
+        if (set1->returnElement(i) == source) {
+            dist[i] = 0;
+            // sourceNodeidx = i;
+        } else {
+            dist[i] = MAX_INT; // overflows to MAX_INT. We will assume path weight won't overflow
+        }
+        if (set1->returnElement(i) == destination) {
+            destNodeidx = i;
+        }
+        previous[i] = "\n";
+    }
+
+    // cout << "Initialsed dijkstra" << endl;
+
+    int tdist; // Preallocation of variables to save like a nanosecond
+    int tnextdist;
+    string tmember;
+    int selectedObject;
+    bool done = false;
+
+    // Dijkstra's actual algorithm which compiles but I don't understand or know if it works again
+    do {
+
+        tdist          = MAX_INT; // Initialisation for next node search
+        selectedObject = MAX_INT;
+
+        for (i = 0; i != set1->size(); i++) {     // Select next unvisited node with lowest distance
+            if (!visited[i] && dist[i] < tdist) { // from origin
+                tdist          = dist[i];
+                selectedObject = i;
+            }
+        }
+
+        // cout << "Selected " << selectedObject << endl;
+
+        if (tdist != MAX_INT && selectedObject != MAX_INT && dist[destNodeidx] == MAX_INT) { // Means everything has been visited
+                                                                                             // or the final node has been found
+                                                                                             // thus algorithm done
+            // cout << "tdist: " << tdist << "\nSelected Object: " << selectedObject << "\nDest Node dist: " << dist[destNodeidx] << endl;
+
+            for (int j = 0; j != set1->size(); j++) {                                         // Search for neighbours
+                tmember = set1->returnElement(selectedObject) + "," + set1->returnElement(j); // Create potential edge
+                if (isMember(tmember)) {                                                      // If edge exists
+                    tnextdist = getWeight(tmember) + dist[selectedObject];                    // Get distance to neighbour through current node
+                    if (tnextdist < dist[j]) {
+                        // cout << "Updating distance to " << set1->returnElement(j) << " from " << set1->returnElement(selectedObject) << endl; //
+                        dist[j]     = tnextdist;                           // Update distance to neighbour if this route is shorter
+                        previous[j] = set1->returnElement(selectedObject); // Update path to node
+                    }
+                }
+            }
+        } else {
+            done = true;
+        }
+
+        // cout << "Setting " << selectedObject << " visited" << endl;
+
+        visited[selectedObject] = 1; // Say this one is visited
+
+        // cout << "Done: " << done << endl;
+
+    } while (!done);
+
+    // Follow path in reverse, recursively
+    path = pathTrace(source, destNodeidx, previous) + destination;
+
+    return dist[destNodeidx]; // return distance to destination node
+}

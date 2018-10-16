@@ -30,6 +30,8 @@ class StringRelation : public SetOfStrings {
     // Return the weight of an edge
     int getWeight(string s);
 
+    string pathTrace(string source, int endidx, string previous[]);
+
   public:
     void setInput(SetOfStrings *s);
     // creates a relation that is identical to the product set of set1
@@ -44,6 +46,8 @@ class StringRelation : public SetOfStrings {
     int getWeight(int idx);
 
     bool isReachable(string start, string finish, std::list<string> *visited);
+
+    string getPath() { return path; }
 
     // Finding the shortest path
     int computeShortest(string source, string destination);
