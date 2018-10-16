@@ -203,8 +203,6 @@ SetOfStrings *StringRelation::computeEquivalenceClass(string element) {
 
 bool StringRelation::isReachable(string start, string finish, std::list<string> *visited) {
 
-    // TODO stop this getting caught in an infite loop
-
     int i = 0;
 
     if (isMember(start + "," + finish)) {
@@ -212,8 +210,10 @@ bool StringRelation::isReachable(string start, string finish, std::list<string> 
     } else {
         for (i = 0; i != set1->size(); i++) {
             string nextElement = returnElement(i);
-            if ((nextElement.compare(start) == 0) && isMember(start + "," + nextElement)) {
-                // isReachable(nextElement, finish);
+            if (std::find(visited->begin(), visited->end(), nextElement) == visited->end()) {
+                if ((nextElement.compare(start) == 0) && isMember(start + "," + nextElement)) {
+                    isReachable(nextElement, finish, visited);
+                }
             }
         }
         return false;

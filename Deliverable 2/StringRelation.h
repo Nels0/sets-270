@@ -1,6 +1,7 @@
 #ifndef STRINGRELATION_H_
 #define STRINGRELATION_H_
 #include "SetOfStrings.h"
+#include <algorithm>
 #include <list>
 
 class StringRelation : public SetOfStrings {
