@@ -49,7 +49,8 @@ bool SetUI::ReadFromFile(string filename, SetOfStrings *ss, StringRelation *sr, 
     }
 
     getline(infile, line); // Get the first line to extract set members
-    line.erase(0, 2);      // Remove '//' in the line
+    // TODO: print line
+    line.erase(0, 2); // Remove '//' in the line
 
     int i = 0;
     size_t found;
@@ -65,7 +66,7 @@ bool SetUI::ReadFromFile(string filename, SetOfStrings *ss, StringRelation *sr, 
     getline(infile, line); // To bypass the second line
 
     // read the rest of the file.
-    while (getline(infile, line)) {
+    while (getline(infile, line)) { // TODO: print each line
         // Remove all the spaces, and erase() does nothing
         line.erase(remove(line.begin(), line.end(), ' '), line.end());
         // find } as the finisher for file reading
@@ -109,6 +110,7 @@ bool SetUI::getFromLine(SetOfStrings *ss, StringRelation *sr, string line) {
     }
     element.push_back(line.substr(i, line.find("[", i) - i));
 
+    // TODO: Make this fail if the string between the two "" isn't just numeric?
     string temp = line.substr(line.find("\"") + 1, std::string::npos);
 
     int tempWeight = stoi(temp, nullptr);
@@ -164,8 +166,8 @@ int SetUI::ListMembers(StringRelation *model) {
     return 0;
 }
 
-void SetUI::printProperties(string property, bool isProperty) {
-    string printString = "  The relation is ";
+void SetUI::printProperties(string property, bool isProperty) { // TODO: modify -e case to match model answer
+    string printString = "  => It is ";
 
     if (!isProperty) {
         printString.append("not ");
@@ -211,37 +213,36 @@ void SetUI::printReachable(bool reachable, bool self) {
 
 void SetUI::printError(string reason) {
 
-    cout << left << setw(2) << " ";
     // error message if the command cannot be understood
     if (reason.compare("command") == 0) {
-        cout << ColorText("Command cannot be understood. Please enter help to see the available commands\n", RED);
+        cout << ColorText(" Command cannot be understood. Please enter help to see the available commands\n", RED);
     }
     // error message if the command argument is incorrect
     else if (reason.compare("argument") == 0) {
-        cout << ColorText("Incorrect command arguments!\n", RED);
-        cout << ColorText("Type help to know about the command arguments\n", RED);
+        cout << ColorText("  Incorrect command arguments!\n", RED);
+        cout << ColorText("  Type help to know about the command arguments\n", RED);
     }
 
     else if (reason.compare("invalidRelation") == 0) {
-        cout << ColorText("Invalid relation in file (Relation refers to non-existent element)\n", RED);
+        cout << ColorText("  Invalid relation in file (Relation refers to non-existent element)\n", RED);
     }
 
     else if (reason.compare("notLoaded") == 0) {
-        cout << ColorText("No relation loaded! load a relation from file and try again\n", RED);
+        cout << ColorText("  No relation loaded! load a relation from file and try again\n", RED);
     }
 
     else if (reason.compare("eqclassfailure") == 0) {
-        cout << ColorText("Equivalence class request could not be executed\nPossibly the string does", RED)
+        cout << ColorText("  Equivalence class request could not be executed\n  Possibly the string does", RED)
              << ColorText(" not exist in the set or there is no equivalence relation\n", RED);
     }
 
     else if (reason.compare("file") == 0) {
-        cout << ColorText(
-            "Error occured while reading the input file. Possible reasons:\n1. File does not exist\n2. Contains a invalid graph\n3. Unreadable "
-            "data\nGraph could not be loaded successfully\n",
-            RED);
+        cout << ColorText("  Error occured while reading the input file. Possible reasons:\n  1. File does not exist\n  2. Contains a invalid "
+                          "graph\n  3. Unreadable "
+                          "data\n  Graph could not be loaded successfully\n",
+                          RED);
     } else if (reason.compare("nonmember") == 0) {
-        cout << ColorText("Argument was not a member of the set.\n", RED);
+        cout << ColorText("  The requested member does not exist in the set\n  Please type 'list' to know about existing strings", RED);
     }
 }
 

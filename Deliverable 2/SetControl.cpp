@@ -24,7 +24,7 @@ SetControl::~SetControl() {
 
 bool SetControl::argCheck(int argCount, int &argc) {
     if (argCount != argc) {
-        setUI->printError("argument");
+        setUI->printError("argument"); // TODO: allow two argments? maybe a range with < >.
         return false;
     }
     return true;
@@ -45,7 +45,7 @@ bool SetControl::Run() {
     while (true) {
 
         // show the menu and get user command
-        command = setUI->GetCommand();
+        command = setUI->GetCommand(); // TODO: Strip spaces so "     " doesn't count as multiple args
 
         int argc = 0;
 
@@ -84,7 +84,7 @@ bool SetControl::Run() {
         }
         // open command execution (Incompleted)
         //**complete this function first.
-        else if (argv.at(0).compare("open") == 0) {
+        else if (argv.at(0).compare("open") == 0) { // TODO: -v switch
             if (argCheck(2, argc) || argCheck(3, argc)) {
 
                 SetOfStrings *temps   = new SetOfStrings();
@@ -142,6 +142,7 @@ bool SetControl::Run() {
         else if (argv.at(0).compare("clear") == 0) {
             if (argCheck(1, argc)) {
                 system("clear");
+                setUI->TopicScreen();
             }
         }
 
