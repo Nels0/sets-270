@@ -22,6 +22,22 @@ SetControl::~SetControl() {
     delete relationModel;
 }
 
+bool SetControl::argCheck(int argCount, int &argc) {
+    if (argCount != argc) {
+        setUI->printError("argument");
+        return false;
+    }
+    return true;
+}
+
+bool SetControl::loadedCheck() {
+    if (setModel->isEmpty() || relationModel->isEmpty()) {
+        setUI->printError("notLoaded");
+        return false;
+    }
+    return true;
+}
+
 bool SetControl::Run() {
     string command;
 
@@ -63,133 +79,115 @@ bool SetControl::Run() {
         }
         // ls command execution (Completed)
         else if (argv.at(0).compare("ls") == 0) {
-            if (!(argc == 1 || argc == 2)) {
-                setUI->printError("argument");
-                continue;
+
+            if (argCheck(1, argc) && argCheck(2, argc)) {
+                if (argc == 2) {
+                    string cmd(argv[1]);
+                    cmd = "ls " + cmd;
+                    system(cmd.c_str());
+                } else {
+                    system("ls");
+                }
             }
-            if (argc == 2) {
-                string cmd(argv[1]);
-                cmd = "ls " + cmd;
-                system(cmd.c_str());
-            } else
-                system("ls");
         }
         // open command execution (Incompleted)
         //**complete this function first.
         else if (argv.at(0).compare("open") == 0) {
-            if (!(argc == 2 || argc == 3)) {
-                setUI->printError("argument");
-                continue;
-            }
-            SetOfStrings *temps   = new SetOfStrings();
-            StringRelation *tempr = new StringRelation();
-            if (argc == 2) {
-                setUI->ReadFromFile(argv.at(1), temps, tempr, false);
+            if (argCheck(2, argc) || argCheck(3, argc)) {
 
-                // Delete old relation to prevent memory leak
-                delete setModel;
-                delete relationModel;
-                // reassign pointers
-                setModel      = temps;
-                relationModel = tempr;
-            } else {
-                // if the file cannot be read
-                if (!setUI->ReadFromFile(argv.at(1), temps, tempr, (argv.at(2).compare("-v") == 0) ? true : false)) {
-                    setUI->printError("file"); // print an error message
-                    continue;
-                } else {
+                SetOfStrings *temps   = new SetOfStrings();
+                StringRelation *tempr = new StringRelation();
+                if (argc == 2) {
+                    setUI->ReadFromFile(argv.at(1), temps, tempr, false);
+
                     // Delete old relation to prevent memory leak
                     delete setModel;
                     delete relationModel;
                     // reassign pointers
                     setModel      = temps;
                     relationModel = tempr;
+                } else {
+                    // if the file cannot be read
+                    if (!setUI->ReadFromFile(argv.at(1), temps, tempr, (argv.at(2).compare("-v") == 0) ? true : false)) {
+                        setUI->printError("file"); // print an error message
+                        continue;
+                    } else {
+                        // Delete old relation to prevent memory leak
+                        delete setModel;
+                        delete relationModel;
+                        // reassign pointers
+                        setModel      = temps;
+                        relationModel = tempr;
+                    }
                 }
             }
 
         }
 
         else if (argv.at(0).compare("list") == 0) {
+
             // cout << "Listing...";
-            if (setModel->isEmpty() || relationModel->isEmpty()) {
-                setUI->printError("notLoaded");
-            } else {
+            if (loadedCheck() && argCheck(1, argc)) {
                 setUI->ListMembers(setModel);
                 setUI->ListMembers(relationModel);
             }
         }
 
         else if (argv.at(0).compare("check") == 0) {
-
-            if (setModel->isEmpty() || relationModel->isEmpty()) {
-                setUI->printError("notLoaded");
-                continue;
-            } else {
-                if (argc == 2) {
-                    if (argv.at(1).compare("-r") == 0) {
-                        setUI->printProperties("reflexive", relationModel->isReflexive());
-                    } else if (argv.at(1).compare("-s") == 0) {
-                        setUI->printProperties("symmetrical", relationModel->isSymmetric());
-                    } else if (argv.at(1).compare("-t") == 0) {
-                        setUI->printProperties("transitive", relationModel->isTransitive());
-                    } else if (argv.at(1).compare("-e") == 0) {
-                        setUI->printProperties("equivalence", relationModel->isEquivalence());
-                    }
-                } else {
-                    setUI->printError("argument");
-                    continue;
+            if (loadedCheck() && argCheck(2, argc)) {
+                if (argv.at(1).compare("-r") == 0) {
+                    setUI->printProperties("reflexive", relationModel->isReflexive());
+                } else if (argv.at(1).compare("-s") == 0) {
+                    setUI->printProperties("symmetrical", relationModel->isSymmetric());
+                } else if (argv.at(1).compare("-t") == 0) {
+                    setUI->printProperties("transitive", relationModel->isTransitive());
+                } else if (argv.at(1).compare("-e") == 0) {
+                    setUI->printProperties("equivalence", relationModel->isEquivalence());
                 }
             }
         }
 
         else if (argv.at(0).compare("clear") == 0) {
-            if (argc == 1) {
+            if (argCheck(1, argc)) {
                 system("clear");
-            } else {
-                setUI->printError("argument");
-                continue;
             }
         }
 
         else if (argv.at(0).compare("eqclass") == 0) {
-            // cout << "argc = " << argc << endl;
-            if (argc != 2) {
-                setUI->printError("argument");
-                continue;
-            } else if (setModel->isEmpty() || relationModel->isEmpty()) {
-                setUI->printError("notLoaded");
-                continue;
+
+            if (argCheck(2, argc) && loadedCheck()) {
+                SetOfStrings *tempEQClass = relationModel->computeEquivalenceClass(argv.at(1));
+
+                if (tempEQClass->isEmpty()) {
+                    setUI->printError("eqclassfailure");
+                    continue;
+                } else {
+                    setUI->printEquivalenceClass(argv.at(1), tempEQClass);
+                }
             }
+        }
 
-            SetOfStrings *tempEQClass = relationModel->computeEquivalenceClass(argv.at(1));
+        else if (argv.at(0).compare("reachable") == 0) {
 
-            if (tempEQClass->isEmpty()) {
-                setUI->printError("eqclassfailure");
-                continue;
-            } else {
-                setUI->printEquivalenceClass(argv.at(1), tempEQClass);
+            if (argCheck(2, argc) && loadedCheck()) {
+                if (!setModel->isMember(argv.at(1)) || !setModel->isMember(argv.at(2))) {
+                    setUI->printError("nonmember");
+                } else if (argv.at(1).compare(argv.at(2)) == 0) {
+                    setUI->printReachable(true, true);
+                } else {
+                    std::list<string> *visited = new std::list<string>;
+                    setUI->printReachable(relationModel->isReachable(argv.at(1), argv.at(2), visited), false);
+                }
             }
 
         }
 
-        else if (argv.at(0).compare("reachable") == 0) {
-            if (argc != 3) { // TODO: Put these into a function called  argCheck(int argc) or something
-                setUI->printError("argument");
-                continue;
-            } else if (setModel->isEmpty() || relationModel->isEmpty()) {
-                setUI->printError("notLoaded");
-                continue;
+        else if (argv.at(0).compare("path") == 0) {
+            if (argCheck(3, argc) && loadedCheck()) {
+                int distance = 3;
+                string path  = "placeholder";
+                setUI->printShortestPath(distance, path);
             }
-
-            if (!setModel->isMember(argv.at(1)) || !setModel->isMember(argv.at(2))) {
-                setUI->printError("nonmember");
-            } else if (argv.at(1).compare(argv.at(2)) == 0) {
-                setUI->printReachable(true, true);
-            } else {
-                std::list<string> *visited = new std::list<string>;
-                setUI->printReachable(relationModel->isReachable(argv.at(1), argv.at(2), visited), false);
-            }
-
         }
 
         // exit command execution (Completed)

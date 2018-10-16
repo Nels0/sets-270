@@ -16,6 +16,8 @@ class SetControl {
     SetUI *setUI;
     SetOfStrings *setModel;
     StringRelation *relationModel;
+    bool argCheck(int argCount, int &argc);
+    bool loadedCheck();
 
   public:
     // constructor/destructor
