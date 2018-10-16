@@ -41,14 +41,6 @@ bool SetControl::loadedCheck() {
 bool SetControl::Run() {
     string command;
 
-    /* Todo:
-     * 	  Implement control logics for handling user commands.
-     *	  Some commands are already programmed for you.
-     *	  Your final code should have no 'cout' in this file.
-     * 	  Also, your "Model" should never print anything to console.
-     * 	  Printing is done only using "View".
-     */
-
     // invoke the main user interaction
     while (true) {
 
@@ -80,7 +72,7 @@ bool SetControl::Run() {
         // ls command execution (Completed)
         else if (argv.at(0).compare("ls") == 0) {
 
-            if (argCheck(1, argc) && argCheck(2, argc)) {
+            if (argCheck(1, argc) || argCheck(2, argc)) {
                 if (argc == 2) {
                     string cmd(argv[1]);
                     cmd = "ls " + cmd;
@@ -169,7 +161,7 @@ bool SetControl::Run() {
 
         else if (argv.at(0).compare("reachable") == 0) {
 
-            if (argCheck(2, argc) && loadedCheck()) {
+            if (argCheck(3, argc) && loadedCheck()) {
                 if (!setModel->isMember(argv.at(1)) || !setModel->isMember(argv.at(2))) {
                     setUI->printError("nonmember");
                 } else if (argv.at(1).compare(argv.at(2)) == 0) {
