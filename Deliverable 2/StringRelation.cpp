@@ -233,8 +233,6 @@ bool StringRelation::isReachable(string start, string finish, std::list<string> 
 
 std::string StringRelation::pathTrace(string source, int endidx, string previous[]) {
 
-    // TODO: figure out how to make the arrows look right
-
     if (previous[endidx].compare(source) == 0) {
         // cout << "found bottom" << endl;
         return previous[endidx] + " -> ";
@@ -263,7 +261,7 @@ std::string StringRelation::pathTrace(string source, int endidx, string previous
 // Input: source node, destination node
 // Output: path length (integer)
 // Note: the generated path is also stored in "path" variable
-int StringRelation::computeShortest(string source, string destination) { // TODO: handle when path doesn't exist
+int StringRelation::computeShortest(string source, string destination) {
 
     // We'll call this infinity and hope that the weight doesn't overflow
     int MAX_INT = std::numeric_limits<int>::max();
