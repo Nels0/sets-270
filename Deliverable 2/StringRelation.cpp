@@ -236,13 +236,13 @@ std::string StringRelation::pathTrace(string source, int endidx, string previous
     // TODO: figure out how to make the arrows look right
 
     if (previous[endidx].compare(source) == 0) {
-        // cout << "foudn bottom" << endl;
+        // cout << "found bottom" << endl;
         return previous[endidx] + " -> ";
 
     } else {
 
         int nextEndidx = -1;
-        for (int i = 0; i != set1->size(); i++) {
+        for (int i = 0; i != set1->size(); i++) { // Find the index of previous[end] is
             // cout << "checking " << i << "th element" << endl;
             // cout << "Checking " << set1->returnElement(i) << " Against " << previous[endidx] << endl;
             if (set1->returnElement(i).compare(previous[endidx]) == 0) {
@@ -263,68 +263,62 @@ std::string StringRelation::pathTrace(string source, int endidx, string previous
 // Input: source node, destination node
 // Output: path length (integer)
 // Note: the generated path is also stored in "path" variable
-int StringRelation::computeShortest(string source, string destination) {
+int StringRelation::computeShortest(string source, string destination) { // TODO: handle when path doesn't exist
 
+    // We'll call this infinity and hope that the weight doesn't overflow
     int MAX_INT = std::numeric_limits<int>::max();
 
     bool visited[setv.size()]; // Default initialisation is to false;
     int dist[setv.size()];
     std::string previous[setv.size()];
 
-    // int sourceNodeidx;
     int destNodeidx = -1;
 
-    int i = 0;
-    for (i = 0; i != set1->size(); i++) { // Initialisation
-        visited[i] = false;
+    // Initialisation of state arrays
+    for (int i = 0; i != set1->size(); i++) {
+        visited[i] = false; // Just to make sure we don't run into undefined behaviour
         if (set1->returnElement(i) == source) {
-            dist[i] = 0;
-            // sourceNodeidx = i;
+            dist[i] = 0; // Distance to source = zero
         } else {
-            dist[i] = MAX_INT; // overflows to MAX_INT. We will assume path weight won't overflow
+            dist[i] = MAX_INT; // Distance to everywhere else is infinity
         }
         if (set1->returnElement(i) == destination) {
-            destNodeidx = i;
+            destNodeidx = i; // Easy tracking of wether algorithm complete
         }
         previous[i] = "\n";
     }
 
-    // cout << "Initialsed dijkstra" << endl;
-
-    int tdist; // Preallocation of variables to save like a nanosecond
+    // Preallocation of variables to save like a nanosecond and prevent scope issues
+    int tdist;
     int tnextdist;
     string tmember;
     int selectedObject;
     bool done = false;
 
-    // Dijkstra's actual algorithm which compiles but I don't understand or know if it works again
+    // Dijkstra's actual algorithm
     do {
 
         tdist          = MAX_INT; // Initialisation for next node search
         selectedObject = MAX_INT;
 
-        for (i = 0; i != set1->size(); i++) {     // Select next unvisited node with lowest distance
+        for (int i = 0; i != set1->size(); i++) { // Select next unvisited node with lowest distance
             if (!visited[i] && dist[i] < tdist) { // from origin
                 tdist          = dist[i];
                 selectedObject = i;
             }
         }
 
-        // cout << "Selected " << selectedObject << endl;
-
-        if (tdist != MAX_INT && selectedObject != MAX_INT && dist[destNodeidx] == MAX_INT) { // Means everything has been visited
-                                                                                             // or the final node has been found
-                                                                                             // thus algorithm done
-            // cout << "tdist: " << tdist << "\nSelected Object: " << selectedObject << "\nDest Node dist: " << dist[destNodeidx] << endl;
-
+        if (tdist != MAX_INT && selectedObject != MAX_INT && dist[destNodeidx] == MAX_INT) {  // Means everything has been visited
+                                                                                              // or the final node has been found
+                                                                                              // thus algorithm done
+                                                                                              //
             for (int j = 0; j != set1->size(); j++) {                                         // Search for neighbours
                 tmember = set1->returnElement(selectedObject) + "," + set1->returnElement(j); // Create potential edge
                 if (isMember(tmember)) {                                                      // If edge exists
                     tnextdist = getWeight(tmember) + dist[selectedObject];                    // Get distance to neighbour through current node
-                    if (tnextdist < dist[j]) {
-                        // cout << "Updating distance to " << set1->returnElement(j) << " from " << set1->returnElement(selectedObject) << endl; //
-                        dist[j]     = tnextdist;                           // Update distance to neighbour if this route is shorter
-                        previous[j] = set1->returnElement(selectedObject); // Update path to node
+                    if (tnextdist < dist[j]) {                                                //
+                        dist[j]     = tnextdist;                                              // Update distance to neighbour if this route is shorter
+                        previous[j] = set1->returnElement(selectedObject);                    // Update path to node
                     }
                 }
             }
@@ -332,11 +326,7 @@ int StringRelation::computeShortest(string source, string destination) {
             done = true;
         }
 
-        // cout << "Setting " << selectedObject << " visited" << endl;
-
         visited[selectedObject] = 1; // Say this one is visited
-
-        // cout << "Done: " << done << endl;
 
     } while (!done);
 
