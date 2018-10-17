@@ -141,7 +141,7 @@ bool SetControl::Run() {
                 if (argv.at(1).compare("-r") == 0) {
                     setUI->printProperties("reflexive", relationModel->isReflexive());
                 } else if (argv.at(1).compare("-s") == 0) {
-                    setUI->printProperties("symmetrical", relationModel->isSymmetric());
+                    setUI->printProperties("symmetric", relationModel->isSymmetric());
                 } else if (argv.at(1).compare("-t") == 0) {
                     setUI->printProperties("transitive", relationModel->isTransitive());
                 } else if (argv.at(1).compare("-e") == 0) {
@@ -187,13 +187,17 @@ bool SetControl::Run() {
         }
 
         else if (argv.at(0).compare("path") == 0) {
-            if (argCheck(3, argc) && loadedCheck()) { // TODO: Check reachable and membrship
-                int distance = relationModel->computeShortest(argv.at(1), argv.at(2));
-                string path  = relationModel->getPath();
-                if (distance != -1) {
-                    setUI->printShortestPath(distance, path);
+            if (argCheck(3, argc) && loadedCheck()) {
+                if (!setModel->isMember(argv.at(1)) || !setModel->isMember(argv.at(2))) {
+                    setUI->printError("nonmember");
                 } else {
-                    setUI->printError("unreachable");
+                    int distance = relationModel->computeShortest(argv.at(1), argv.at(2));
+                    string path  = relationModel->getPath();
+                    if (distance != -1) {
+                        setUI->printShortestPath(distance, path);
+                    } else {
+                        setUI->printError("unreachable");
+                    }
                 }
             }
         }

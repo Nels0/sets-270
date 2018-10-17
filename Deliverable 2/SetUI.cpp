@@ -173,13 +173,24 @@ int SetUI::ListMembers(StringRelation *model) {
     return 0;
 }
 
-void SetUI::printProperties(string property, bool isProperty) { // TODO: modify -e case to match model answer
-    string printString = "  => It is ";
+void SetUI::printProperties(string property, bool isProperty) {
 
-    if (!isProperty) {
-        printString.append("not ");
+    string printString;
+
+    if (property.compare("equivalence") == 0) {
+        printString = "  => This is ";
+        if (!isProperty) {
+            printString.append("not ");
+        }
+        printString.append("an equivalence relation");
+    } else {
+        printString = "  => It is ";
+
+        if (!isProperty) {
+            printString.append("not ");
+        }
+        printString.append(property);
     }
-    printString.append(property);
 
     if (isProperty) {
         cout << ColorText(printString, GREEN) << endl;
@@ -187,7 +198,6 @@ void SetUI::printProperties(string property, bool isProperty) { // TODO: modify 
         cout << ColorText(printString, RED) << endl;
         ;
     }
-
     return;
 }
 
@@ -235,7 +245,7 @@ void SetUI::printError(string reason) {
     }
 
     else if (reason.compare("notLoaded") == 0) {
-        cout << ColorText("  No relation loaded! load a relation from file and try again\n", RED);
+        cout << ColorText("  There is no set loaded to the program\n  Please open a file using 'open' command!\n", RED);
     }
 
     else if (reason.compare("eqclassfailure") == 0) {
@@ -251,7 +261,7 @@ void SetUI::printError(string reason) {
     }
 
     else if (reason.compare("nonmember") == 0) {
-        cout << ColorText("  The requested member does not exist in the set\n  Please type 'list' to know about existing strings", RED);
+        cout << ColorText("  The requested member does not exist in the set\n  Please type 'list' to know about existing strings\n", RED);
     }
 
     else if (reason.compare("unreachable") == 0) {
