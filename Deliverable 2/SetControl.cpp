@@ -22,9 +22,17 @@ SetControl::~SetControl() {
     delete relationModel;
 }
 
+bool SetControl::argCheck(int argMin, int argMax, int &argc) {
+    if (argc > argMax || argc < argMin) {
+        setUI->printError("argument");
+        return false;
+    }
+    return true;
+}
+
 bool SetControl::argCheck(int argCount, int &argc) {
-    if (argCount != argc) {
-        setUI->printError("argument"); // TODO: allow two argments? maybe a range with < >.
+    if (argc != argCount) {
+        setUI->printError("argument");
         return false;
     }
     return true;
@@ -72,7 +80,7 @@ bool SetControl::Run() {
         // ls command execution (Completed)
         else if (argv.at(0).compare("ls") == 0) {
 
-            if (argCheck(1, argc) || argCheck(2, argc)) {
+            if (argCheck(1, 2, argc)) {
                 if (argc == 2) {
                     string cmd(argv[1]);
                     cmd = "ls " + cmd;
@@ -85,8 +93,7 @@ bool SetControl::Run() {
         // open command execution (Incompleted)
         //**complete this function first.
         else if (argv.at(0).compare("open") == 0) { // TODO: -v switch
-            if (argCheck(2, argc) || argCheck(3, argc)) {
-
+            if (argCheck(2, 3, argc)) {
                 SetOfStrings *temps   = new SetOfStrings();
                 StringRelation *tempr = new StringRelation();
                 if (argc == 2) {

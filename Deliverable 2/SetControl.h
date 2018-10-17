@@ -17,6 +17,7 @@ class SetControl {
     SetOfStrings *setModel;
     StringRelation *relationModel;
     bool argCheck(int argCount, int &argc);
+    bool argCheck(int argMin, int argMax, int &argc);
     bool loadedCheck();
 
   public:
