@@ -248,8 +248,14 @@ void SetUI::printError(string reason) {
                           "graph\n  3. Unreadable "
                           "data\n  Graph could not be loaded successfully\n",
                           RED);
-    } else if (reason.compare("nonmember") == 0) {
+    }
+
+    else if (reason.compare("nonmember") == 0) {
         cout << ColorText("  The requested member does not exist in the set\n  Please type 'list' to know about existing strings", RED);
+    }
+
+    else if (reason.compare("unreachable") == 0) {
+        cout << ColorText("  Unreachable!\n", RED);
     }
 }
 

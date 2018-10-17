@@ -308,7 +308,7 @@ int StringRelation::computeShortest(string source, string destination) { // TODO
             }
         }
 
-        if (tdist != MAX_INT && selectedObject != MAX_INT && dist[destNodeidx] == MAX_INT) {  // Means everything has been visited
+        if (tdist != MAX_INT && selectedObject != MAX_INT && dist[destNodeidx] == MAX_INT) {  // checks if everything has been visited
                                                                                               // or the final node has been found
                                                                                               // thus algorithm done
                                                                                               //
@@ -319,9 +319,11 @@ int StringRelation::computeShortest(string source, string destination) { // TODO
                     if (tnextdist < dist[j]) {                                                //
                         dist[j]     = tnextdist;                                              // Update distance to neighbour if this route is shorter
                         previous[j] = set1->returnElement(selectedObject);                    // Update path to node
-                    }
-                }
-            }
+                    }                                                                         //
+                }                                                                             //
+            }                                                                                 //
+        } else if (tdist == MAX_INT && selectedObject == MAX_INT && dist[destNodeidx] == MAX_INT) { // Checks if unreachable
+            return -1;
         } else {
             done = true;
         }

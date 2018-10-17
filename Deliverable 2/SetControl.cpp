@@ -190,7 +190,11 @@ bool SetControl::Run() {
             if (argCheck(3, argc) && loadedCheck()) { // TODO: Check reachable and membrship
                 int distance = relationModel->computeShortest(argv.at(1), argv.at(2));
                 string path  = relationModel->getPath();
-                setUI->printShortestPath(distance, path);
+                if (distance != -1) {
+                    setUI->printShortestPath(distance, path);
+                } else {
+                    setUI->printError("unreachable");
+                }
             }
         }
 
