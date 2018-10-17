@@ -49,7 +49,11 @@ bool SetUI::ReadFromFile(string filename, SetOfStrings *ss, StringRelation *sr, 
     }
 
     getline(infile, line); // Get the first line to extract set members
-    // TODO: print line
+
+    if (verbose) {
+        cout << ColorText(line, WHITE) << endl;
+    }
+
     line.erase(0, 2); // Remove '//' in the line
 
     int i = 0;
@@ -66,7 +70,10 @@ bool SetUI::ReadFromFile(string filename, SetOfStrings *ss, StringRelation *sr, 
     getline(infile, line); // To bypass the second line
 
     // read the rest of the file.
-    while (getline(infile, line)) { // TODO: print each line
+    while (getline(infile, line)) {
+        if (verbose) {
+            cout << ColorText(line, WHITE) << endl;
+        }
         // Remove all the spaces, and erase() does nothing
         line.erase(remove(line.begin(), line.end(), ' '), line.end());
         // find } as the finisher for file reading
