@@ -53,8 +53,7 @@ bool SetControl::Run() {
     while (true) {
 
         // show the menu and get user command
-        command = setUI->GetCommand(); // TODO: Strip spaces so "     " doesn't count as multiple args
-
+        command  = setUI->GetCommand();
         int argc = 0;
 
         // string tokenizer to split string by using " " as the separator.
@@ -63,10 +62,15 @@ bool SetControl::Run() {
         int i = 0;
         size_t found;
         while ((found = command.find(" ", i)) != std::string::npos) {
-            argv.push_back(command.substr(i, found - i));
+            string t_command = command.substr(i, found - i);
+            if (t_command.compare("") != 0) {
+                argv.push_back(t_command);
+            }
             i = found + 1;
         }
-        argv.push_back(command.substr(i));
+        if (command.substr(i, found - i).compare("") != 0) {
+            argv.push_back(command.substr(i));
+        }
 
         argc = argv.size();
         // if enter is pressed

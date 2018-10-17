@@ -251,7 +251,7 @@ string SetUI::GetCommand() {
     cout << ">> ";
 
     getline(cin, commandInput);
-    // cout << commandInput << endl;
+
     return commandInput;
 }
 
