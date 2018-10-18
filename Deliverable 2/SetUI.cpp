@@ -122,7 +122,6 @@ bool SetUI::getFromLine(SetOfStrings *ss, StringRelation *sr, string line) {
     }
     element.push_back(line.substr(i, line.find("[", i) - i));
 
-    // TODO: Make this fail if the string between the two "" isn't just numeric?
     string temp = line.substr(line.find("\"") + 1, std::string::npos);
 
     int tempWeight = stoi(temp, nullptr);

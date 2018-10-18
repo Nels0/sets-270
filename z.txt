@@ -10,7 +10,7 @@ digraph testgraph{
   60   ->  2   [  label=" 1" ] ;
   60   ->  4 [  label="1" ]  ;
   
-60   ->  5 [ label="1 " ]  ;
+60   ->  5 [ label="1 k" ]  ;
 
 }
 
