@@ -96,7 +96,7 @@ bool SetControl::Run() {
         }
         // open command execution (Incompleted)
         //**complete this function first.
-        else if (argv.at(0).compare("open") == 0) { // TODO: -v switch
+        else if (argv.at(0).compare("open") == 0) {
             if (argCheck(2, 3, argc)) {
                 SetOfStrings *temps   = new SetOfStrings();
                 StringRelation *tempr = new StringRelation();

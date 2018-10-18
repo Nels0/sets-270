@@ -58,6 +58,9 @@ bool SetUI::ReadFromFile(string filename, SetOfStrings *ss, StringRelation *sr, 
 
     int i = 0;
     size_t found;
+    // Remove all the spaces, and resize string
+    line.erase(remove(line.begin(), line.end(), ' '), line.end());
+
     while ((found = line.find(",", i)) != std::string::npos) { // Find comma
         // Add from i to just before comma
         ss->insertElement(line.substr(i, found - i));
@@ -76,12 +79,14 @@ bool SetUI::ReadFromFile(string filename, SetOfStrings *ss, StringRelation *sr, 
         }
         // Remove all the spaces, and erase() does nothing
         line.erase(remove(line.begin(), line.end(), ' '), line.end());
-        // find } as the finisher for file reading
-        if (line.find("}") != string::npos)
-            break;
-        // fetch set and relation in the line
-        if (!getFromLine(ss, sr, line))
-            return false;
+        if (line.compare("") != 0) {
+            // find } as the finisher for file reading
+            if (line.find("}") != string::npos)
+                break;
+            // fetch set and relation in the line
+            if (!getFromLine(ss, sr, line))
+                return false;
+        }
     }
     infile.close();
     sr->setInput(ss);
