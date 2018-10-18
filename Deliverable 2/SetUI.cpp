@@ -250,7 +250,9 @@ void SetUI::printError(string reason) {
     }
 
     else if (reason.compare("notLoaded") == 0) {
-        cout << ColorText("  There is no set loaded to the program\n  Please open a file using 'open' command!\n", RED);
+        cout << ColorText("  Operation could be initialized because there is no graph to compute\n  Please load a graph first by using 'open' "
+                          "command which will read a file\n",
+                          RED);
     }
 
     else if (reason.compare("eqclassfailure") == 0) {

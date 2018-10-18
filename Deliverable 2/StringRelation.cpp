@@ -263,7 +263,7 @@ std::string StringRelation::pathTrace(string source, int endidx, string previous
 // Input: source node, destination node
 // Output: path length (integer)
 // Note: the generated path is also stored in "path" variable
-int StringRelation::computeShortest(string source, string destination) { // TODO: Not crash when unreachable
+int StringRelation::computeShortest(string source, string destination) {
 
     // We'll call this infinity and hope that the weight doesn't overflow
     int MAX_INT = std::numeric_limits<int>::max();
@@ -285,7 +285,6 @@ int StringRelation::computeShortest(string source, string destination) { // TODO
         if (set1->returnElement(i) == destination) {
             destNodeidx = i; // Easy tracking of wether algorithm complete
         }
-        previous[i] = "\n";
     }
 
     // Preallocation of variables to save like a nanosecond and prevent scope issues
@@ -308,7 +307,7 @@ int StringRelation::computeShortest(string source, string destination) { // TODO
             }
         }
 
-        if (tdist != MAX_INT && selectedObject != MAX_INT && dist[destNodeidx] == MAX_INT) {  // checks if everything has been visited
+        if (tdist != MAX_INT && selectedObject != MAX_INT && !visited[destNodeidx]) {         // checks if everything has been visited
                                                                                               // or the final node has been found
                                                                                               // thus algorithm done
                                                                                               //
@@ -321,8 +320,9 @@ int StringRelation::computeShortest(string source, string destination) { // TODO
                         previous[j] = set1->returnElement(selectedObject);                    // Update path to node
                     }                                                                         //
                 }                                                                             //
-            }                                                                                 //
-        } else if (tdist == MAX_INT && selectedObject == MAX_INT && dist[destNodeidx] == MAX_INT) { // Checks if unreachable
+            }
+        } else if (tdist == MAX_INT && selectedObject == MAX_INT && !visited[destNodeidx]) { // Checks if unreachable
+
             return -1;
         } else {
             done = true;
