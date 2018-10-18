@@ -225,7 +225,7 @@ bool StringRelation::isReachable(string start, string finish, std::list<string> 
             string nextElement = set1->returnElement(i); // The potential next node
             if (std::find(visited->begin(), visited->end(), nextElement) == visited->end() &&
                 isMember(start + "," + nextElement)) {     // If the next node hasn't been visited (less intensive first)
-                                                           // and the path between nodes exists,
+                                                           // and the path between nodes exists
                 isReachable(nextElement, finish, visited); // search from next element to finish
             }
         }
