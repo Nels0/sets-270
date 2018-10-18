@@ -214,17 +214,19 @@ SetOfStrings *StringRelation::computeEquivalenceClass(string element) {
 
 bool StringRelation::isReachable(string start, string finish, std::list<string> *visited) {
 
-    int i = 0;
+    // A depth-first recursive search for a path between start and finish objects
 
-    if (isMember(start + "," + finish)) {
+    visited->push_back(start);
+
+    if (isMember(start + "," + finish)) { // Check if we can reach the destination node from current node
         return true;
     } else {
-        for (i = 0; i != set1->size(); i++) {
-            string nextElement = returnElement(i);
-            if (std::find(visited->begin(), visited->end(), nextElement) == visited->end()) {
-                if ((nextElement.compare(start) == 0) && isMember(start + "," + nextElement)) {
-                    isReachable(nextElement, finish, visited);
-                }
+        for (int i = 0; i != set1->size(); i++) {        // check every node
+            string nextElement = set1->returnElement(i); // The potential next node
+            if (std::find(visited->begin(), visited->end(), nextElement) == visited->end() &&
+                isMember(start + "," + nextElement)) {     // If the next node hasn't been visited (less intensive first)
+                                                           // and the path between nodes exists,
+                isReachable(nextElement, finish, visited); // search from next element to finish
             }
         }
         return false;
@@ -261,7 +263,7 @@ std::string StringRelation::pathTrace(string source, int endidx, string previous
 // Input: source node, destination node
 // Output: path length (integer)
 // Note: the generated path is also stored in "path" variable
-int StringRelation::computeShortest(string source, string destination) {
+int StringRelation::computeShortest(string source, string destination) { // TODO: Not crash when unreachable
 
     // We'll call this infinity and hope that the weight doesn't overflow
     int MAX_INT = std::numeric_limits<int>::max();
