@@ -229,7 +229,7 @@ void SetUI::printReachable(bool reachable, bool self) {
             cout << ColorText("(Source == Destination)", BLUE) << endl;
         }
     } else {
-        cout << ColorText("Not reachable", RED) << endl;
+        printError("unreachable");
     }
 }
 

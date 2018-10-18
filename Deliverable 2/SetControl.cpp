@@ -146,6 +146,8 @@ bool SetControl::Run() {
                     setUI->printProperties("transitive", relationModel->isTransitive());
                 } else if (argv.at(1).compare("-e") == 0) {
                     setUI->printProperties("equivalence", relationModel->isEquivalence());
+                } else {
+                    setUI->printError("argument");
                 }
             }
         }
