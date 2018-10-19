@@ -168,9 +168,10 @@ bool SetControl::Run() {
             if (argCheck(2, argc) && loadedCheck()) {
                 SetOfStrings *tempEQClass = relationModel->computeEquivalenceClass(argv.at(1));
 
-                if (tempEQClass->isEmpty()) {
+                if (!setModel->isMember(argv.at(1))) {
+                    setUI->printError("nonmember");
+                } else if (tempEQClass->isEmpty()) {
                     setUI->printError("eqclassfailure");
-                    continue;
                 } else {
                     setUI->printEquivalenceClass(argv.at(1), tempEQClass);
                 }
