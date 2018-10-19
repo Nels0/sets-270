@@ -224,8 +224,8 @@ bool StringRelation::isReachable(string start, string finish, std::list<string> 
         for (int i = 0; i != set1->size(); i++) {        // check every node
             string nextElement = set1->returnElement(i); // The potential next node
             if (std::find(visited->begin(), visited->end(), nextElement) == visited->end() &&
-                isMember(start + "," + nextElement)) {     // If the next node hasn't been visited (less intensive first)
-                                                           // and the path between nodes exists
+                isMember(start + "," + nextElement)) { // If the next node hasn't been visited (less intensive first)
+                                                       // and the path between nodes exists
                 isReachable(nextElement, finish, visited); // search from next element to finish
             }
         }
@@ -286,7 +286,7 @@ int StringRelation::computeShortest(string source, string destination) {
             destNodeidx = i; // Easy tracking of wether algorithm complete
         }
     }
-
+    cout << "done initialisation" << endl;
     // Preallocation of variables to save like a nanosecond and prevent scope issues
     int tdist;
     int tnextdist;
@@ -300,35 +300,36 @@ int StringRelation::computeShortest(string source, string destination) {
         tdist          = MAX_INT; // Initialisation for next node search
         selectedObject = MAX_INT;
 
-        for (int i = 0; i != set1->size(); i++) { // Select next unvisited node with lowest distance
-            if (!visited[i] && dist[i] < tdist) { // from origin
+        for (int i = 0; i != set1->size(); i++) { // Select next unvisited node with lowest distance from origin
+            if (!visited[i] && dist[i] < tdist) {
                 tdist          = dist[i];
                 selectedObject = i;
             }
         }
 
-        if (tdist != MAX_INT && selectedObject != MAX_INT && !visited[destNodeidx]) {         // checks if everything has been visited
-                                                                                              // or the final node has been found
-                                                                                              // thus algorithm done
-                                                                                              //
-            for (int j = 0; j != set1->size(); j++) {                                         // Search for neighbours
+        if (tdist != MAX_INT && selectedObject != MAX_INT && !visited[destNodeidx]) { // checks if everything has been
+                                                                                      // visited or the final node has
+                                                                                      // been found thus algorithm done
+                                                                                      //
+            for (int j = 0; j != set1->size(); j++) {                                 // Search for neighbours
                 tmember = set1->returnElement(selectedObject) + "," + set1->returnElement(j); // Create potential edge
                 if (isMember(tmember)) {                                                      // If edge exists
-                    tnextdist = getWeight(tmember) + dist[selectedObject];                    // Get distance to neighbour through current node
-                    if (tnextdist < dist[j]) {                                                //
-                        dist[j]     = tnextdist;                                              // Update distance to neighbour if this route is shorter
-                        previous[j] = set1->returnElement(selectedObject);                    // Update path to node
-                    }                                                                         //
-                }                                                                             //
+                    tnextdist =
+                        getWeight(tmember) + dist[selectedObject]; // Get distance to neighbour through current node
+                    if (tnextdist < dist[j]) {
+                        dist[j]     = tnextdist; // Update distance to neighbour if this route is shorter
+                        previous[j] = set1->returnElement(selectedObject); // Update path to node
+                    }
+                }
             }
+            visited[selectedObject] = 1; // Say this one is visited
+
         } else if (tdist == MAX_INT && selectedObject == MAX_INT && !visited[destNodeidx]) { // Checks if unreachable
 
             return -1;
         } else {
             done = true;
         }
-
-        visited[selectedObject] = 1; // Say this one is visited
 
     } while (!done);
 
