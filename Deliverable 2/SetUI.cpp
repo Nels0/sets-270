@@ -44,7 +44,6 @@ bool SetUI::ReadFromFile(string filename, SetOfStrings *ss, StringRelation *sr, 
 
     // return false if the file does not exist
     if (!infile.good()) {
-        printError("file");
         return false;
     }
 
@@ -249,7 +248,8 @@ void SetUI::printError(string reason) {
     }
 
     else if (reason.compare("notLoaded") == 0) {
-        cout << ColorText("  Operation could be initialized because there is no graph to compute\n  Please load a graph first by using 'open' "
+        cout << ColorText("  Operation could be initialized because there is no graph to compute\n  Please load a "
+                          "graph first by using 'open' "
                           "command which will read a file\n",
                           RED);
     }
@@ -260,14 +260,17 @@ void SetUI::printError(string reason) {
     }
 
     else if (reason.compare("file") == 0) {
-        cout << ColorText("  Error occured while reading the input file. Possible reasons:\n  1. File does not exist\n  2. Contains a invalid "
+        cout << ColorText("  Error occured while reading the input file. Possible reasons:\n  1. File does not exist\n "
+                          " 2. Contains a invalid "
                           "graph\n  3. Unreadable "
                           "data\n  Graph could not be loaded successfully\n",
                           RED);
     }
 
     else if (reason.compare("nonmember") == 0) {
-        cout << ColorText("  The requested member does not exist in the set\n  Please type 'list' to know about existing strings\n", RED);
+        cout << ColorText(
+            "  The requested member does not exist in the set\n  Please type 'list' to know about existing strings\n",
+            RED);
     }
 
     else if (reason.compare("unreachable") == 0) {

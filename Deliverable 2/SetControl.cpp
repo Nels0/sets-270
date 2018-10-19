@@ -101,7 +101,10 @@ bool SetControl::Run() {
                 SetOfStrings *temps   = new SetOfStrings();
                 StringRelation *tempr = new StringRelation();
                 if (argc == 2) {
-                    setUI->ReadFromFile(argv.at(1), temps, tempr, false);
+                    if (!setUI->ReadFromFile(argv.at(1), temps, tempr, false)) {
+                        setUI->printError("file"); // print an error message
+                        continue;
+                    }
 
                     // Delete old relation to prevent memory leak
                     delete setModel;
@@ -111,7 +114,8 @@ bool SetControl::Run() {
                     relationModel = tempr;
                 } else {
                     // if the file cannot be read
-                    if (!setUI->ReadFromFile(argv.at(1), temps, tempr, (argv.at(2).compare("-v") == 0) ? true : false)) {
+                    if (!setUI->ReadFromFile(argv.at(1), temps, tempr,
+                                             (argv.at(2).compare("-v") == 0) ? true : false)) {
                         setUI->printError("file"); // print an error message
                         continue;
                     } else {
