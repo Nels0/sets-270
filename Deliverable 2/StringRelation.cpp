@@ -216,6 +216,8 @@ bool StringRelation::isReachable(string start, string finish, std::list<string> 
 
     // A depth-first recursive search for a path between start and finish objects
 
+    bool inList;
+
     visited->push_back(start);
 
     if (isMember(start + "," + finish)) { // Check if we can reach the destination node from current node
@@ -223,10 +225,19 @@ bool StringRelation::isReachable(string start, string finish, std::list<string> 
     } else {
         for (int i = 0; i != set1->size(); i++) {        // check every node
             string nextElement = set1->returnElement(i); // The potential next node
-            if (std::find(visited->begin(), visited->end(), nextElement) == visited->end() &&
-                isMember(start + "," + nextElement)) { // If the next node hasn't been visited (less intensive first)
-                                                       // and the path between nodes exists
-                isReachable(nextElement, finish, visited); // search from next element to finish
+            // Search for nextElement in the list
+            for (std::list<string>::iterator it = visited->begin(); it != visited->end(); it++) {
+                inList = false;
+                if (nextElement.compare(*it) == 0) {
+                    inList = true;
+                }
+            }
+            if (!inList && isMember(start + "," + nextElement)) {
+                // If the next node hasn't been visited
+                // and the path between nodes exists
+                if (isReachable(nextElement, finish, visited)) {
+                    return true;
+                } // search from next element to finish
             }
         }
         return false;
