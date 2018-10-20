@@ -286,7 +286,6 @@ int StringRelation::computeShortest(string source, string destination) {
             destNodeidx = i; // Easy tracking of wether algorithm complete
         }
     }
-    cout << "done initialisation" << endl;
     // Preallocation of variables to save like a nanosecond and prevent scope issues
     int tdist;
     int tnextdist;
