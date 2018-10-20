@@ -51,7 +51,6 @@ vector<string> StringRelation::makeTokens(string next) {
     char *token = std::strtok(a, ",");
     int index   = 0;
     while (token != NULL) {
-        // std::cout << "The next token is: "<< token << '\n';
         out.push_back(token);
         token = std::strtok(NULL, ",");
         index++;
@@ -66,7 +65,6 @@ string StringRelation::createReflexiveElement(string s) {
     next1 = next;
     next.append(",");
     next.append(next1);
-    // cout<<"The reflexive element created"<<next<<endl;
     return next;
 }
 
@@ -78,15 +76,12 @@ string StringRelation::computeDual(string s) {
     p = tokens.begin();
     string other, other1;
     while (p != tokens.end() - 1) {
-        other = *p;
-        // cout<<"Other: "<< *p << "\n";
+        other  = *p;
         other1 = *(p + 1);
-        // cout<<"Other1: "<<other1<<"\n";
         other1.append(",");
         other1.append(other);
         ++p;
     }
-    // cout<<"Other1:"<<other1<<endl;
     return other1;
 }
 
@@ -135,8 +130,6 @@ bool StringRelation::isSymmetric() {
     std::vector<string>::iterator p;
 
     for (p = setv.begin(); p != setv.end(); p++) {
-        // cout << "checking if " << computeDual(*p) << " isMember: " <<
-        // isMember(computeDual(*p)) << endl;
         if (!isMember(computeDual(*p))) {
             return false;
         }
@@ -247,25 +240,20 @@ bool StringRelation::isReachable(string start, string finish, std::list<string> 
 std::string StringRelation::pathTrace(string source, int endidx, string previous[]) {
 
     if (previous[endidx].compare(source) == 0) {
-        // cout << "found bottom" << endl;
         return previous[endidx] + " -> ";
 
     } else {
 
         int nextEndidx = -1;
         for (int i = 0; i != set1->size(); i++) { // Find the index of previous[end] is
-            // cout << "checking " << i << "th element" << endl;
-            // cout << "Checking " << set1->returnElement(i) << " Against " << previous[endidx] << endl;
             if (set1->returnElement(i).compare(previous[endidx]) == 0) {
                 nextEndidx = i;
             }
         }
         if (nextEndidx == -1) {
-            // cout << "previous node not found" << endl;
             return "\n";
         }
 
-        // cout << " Current end: " << endidx << "\n Next End:" << nextEndidx << endl;
         return pathTrace(source, nextEndidx, previous) + previous[endidx] + " -> ";
     }
 }

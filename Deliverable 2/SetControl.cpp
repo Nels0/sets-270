@@ -133,7 +133,6 @@ bool SetControl::Run() {
 
         else if (argv.at(0).compare("list") == 0) {
 
-            // cout << "Listing...";
             if (loadedCheck() && argCheck(1, argc)) {
                 setUI->ListMembers(setModel);
                 setUI->ListMembers(relationModel);
